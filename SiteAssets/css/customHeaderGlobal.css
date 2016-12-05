@@ -1,0 +1,40 @@
+.header-row h1
+{
+	width: 163px;
+}
+.header-row h1 a span.logomark
+{
+	background-image: url("../images/ciLogo_Large.svg"); 
+	background-repeat: no-repeat;
+	background-size: 128px 41px;
+	background-position: center 6.5px;
+
+}
+
+.global-header--mobile h1 a.logomark
+{
+	background-image: url("../images/ciLogo_Large.svg"); 
+	background-repeat: no-repeat;
+	background-size: 116px 36px;
+	background-position: center 6.5px;
+
+}
+.global-header--mobile h1
+{
+	width: 140px;
+}
+
+.secondary-nav__cta--join-us
+{
+	display:none !important;
+}
+
+.mp-menu__cta-nav li:first-child 
+{
+	width: 100%;
+}
+
+.mp-menu__cta-nav li:nth-child(2)
+{
+	display:none;
+}

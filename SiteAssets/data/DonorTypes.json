@@ -1,0 +1,24 @@
+{
+  "value": [
+    {
+      "Id": 1,
+      "Title": "Corporate",
+      "ID": 1
+    },
+    {
+      "Id": 2,
+      "Title": "Foundation",
+      "ID": 2
+    },
+    {
+      "Id": 3,
+      "Title": "Individual",
+      "ID": 3
+    },
+    {
+      "Id": 4,
+      "Title": "Public",
+      "ID": 4
+    }
+  ]
+}

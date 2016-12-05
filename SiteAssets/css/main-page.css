@@ -1,0 +1,7 @@
+#pageContentTitle {
+    display: none !important;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+    font-size: 9pt !important;
+}

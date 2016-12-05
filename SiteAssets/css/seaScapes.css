@@ -1,0 +1,35 @@
+        .yAxis .grid-line {
+            opacity: 0.3;
+            stroke-dasharray: 1, 2
+        }
+        
+        .yAxis path,
+        .yAxis line,
+        .xAxis path,
+        .xAxis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+            stroke-width: 1;
+        }
+        
+        .xAxis text,
+        .yAxis text,
+        .slice text,
+        .legend {
+            /*font-family: Helvetica-Bold, sans-serif;*/
+            font-weight: bold;
+            font-size: 14px;
+            fill: #002451;
+        }
+        
+        rect {
+            stroke-width: 2;
+        }
+        
+        path.slice:hover,
+        rect:hover {
+            /*fill: #5A0441;*/
+            fill: #00FFFF;
+        }
+        
