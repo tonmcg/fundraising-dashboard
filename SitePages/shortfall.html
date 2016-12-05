@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<!--<%@ Page Language="C#" %>-->
+<!--    <%@ Register tagprefix="SharePoint" namespace="Microsoft.SharePoint.WebControls" assembly="Microsoft.SharePoint, -->
+<!--	Version=15.0.0.0, Culture=neutral, -->
+<!--	PublicKeyToken=71e9bce111e9429c" %>-->
+<html>
+
+<head>
+    <meta name="WebPartPageExpansion" content="full" />
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>Shortfall Dashboard</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="../SiteAssets/bootstrap/css/bootstrap.min.css">
+
+    <!-- DC Core CSS -->
+    <link rel="stylesheet" type="text/css" href="../SiteAssets/css/dc.css" />
+
+    <!-- Keen CSS -->
+    <link rel="stylesheet" type="text/css" href="../SiteAssets/css/keen-dashboards.css" />
+
+    <!-- CI CSS -->
+    <link rel="stylesheet" type="text/css" href="../SiteAssets/css/mq.css">
+
+    <!-- CI Header CSS -->
+    <link rel="stylesheet" type="text/css" href="../SiteAssets/css/customHeaderGlobal.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="../SiteAssets/css/custom.css">
+
+    <style>
+        .glyphicon-envelope:before {
+            font-family: 'Glyphicons Halflings';
+            /* bootstrap glyphs override for CI icons */
+        }
+    </style>
+
+</head>
+
+<body class="with-desktop-header dashboard">
+    <!-- SharePoint security validation aspx controls -->
+    <!-- https://msdn.microsoft.com/en-us/library/office/ms472879%28v=office.14%29.aspx -->
+    <form id="Form1" method="post" runat="server">
+        <!--<SharePoint:FormDigest ID="FormDigest1" runat="server"></SharePoint:FormDigest>-->
+
+        <header role="banner" class="introCopy global-header--desktop js-global-header--desktop">
+            <div class="header-row bg-dark contain">
+                <ul class="secondary-nav">
+                    <li class="secondary-nav__social"><a class="icon-facebook" href="https://www.facebook.com/conservation.intl"><span class="screen-reader">Facebook</span></a></li>
+                    <li class="secondary-nav__social"><a class="icon-twitter" href="https://twitter.com/conservationorg"><span class="screen-reader">Twitter</span></a></li>
+                    <li class="secondary-nav__social"><a class="icon-youtube" href="http://www.youtube.com/user/ConservationDotOrg"><span class="screen-reader">YouTube</span></a></li>
+                    <li class="secondary-nav__social"><a class="icon-instagram" href="http://instagram.com/conservationorg"><span class="screen-reader">Instagram</span></a></li>
+                    <li class="secondary-nav__text"><a href="http://blog.conservation.org/">Blog</a></li>
+                </ul>
+            </div>
+            <div class="header-row contain">
+                <h1>
+                    <a href="http://www.conservation.org/">
+                        <span class="logomark">Conservation International</span>
+                    </a>
+                </h1>
+                <ul class="primary-nav">
+                    <li class="text-uppercase">
+                        <a href="index.aspx">Center for Oceans<br/>
+							<!--<span class="text-lowercase bodyCopy"> Return to homepage</span>-->
+						</a>
+                    </li>
+                    <li class="text-uppercase">
+                        <a href="form.aspx">New Grant Form<br/>
+							<!--<span class="text-lowercase bodyCopy"> Submit new grant or gift opportunity</span>-->
+						</a>
+                    </li>
+                    <li class="text-uppercase active">
+                        <a href="shortfall.aspx">Shortfall<br/>
+							<!--<span class="text-lowercase bodyCopy"> View the status of the current year's shortfall</span>-->
+						</a>
+                    </li>
+                    <li class="text-uppercase">
+                        <a href="dashboardDC.aspx">Fiscal Year Dashboard<br/>
+							<!--<span class="text-lowercase bodyCopy"> View the accrual-based dashboard by fiscal year</span>-->
+						</a>
+                    </li>
+                    <li class="text-uppercase">
+                        <a href="#">Projections<br/>
+							<!--<span class="text-lowercase bodyCopy"> View revenue projections for the next five fiscal years</span>-->
+						</a>
+                    </li>
+                    <li class="text-uppercase hidden">
+                        <a href="https://conservation.sharepoint.com/teams/units/mcso/fundraising-dashboard/_layouts/15/viewlsts.aspx">Site Contents<br/>
+							<!--<span class="text-lowercase bodyCopy"> Read, edit, and update dashboard data through Site Contents</span>-->
+						</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- main page content -->
+                <div class="col-sm-12 main">
+
+                    <!-- page header -->
+                    <div class="row title1">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="chart-wrapper" style="padding-top:25px">
+                                <div class="chart-stage">
+                                    <span>Shortfall Dashboard</span>
+                                    <div class="row introCopy">
+                                        <div class="col-sm-8 col-md-8">
+                                        </div>
+                                        <!-- /.col-sm-6 col-md-6 -->
+                                        <div class="col-sm-4 col-md-4">
+                                            <div class="dc-chart pull-right">
+                                                <h3 id="dateHeader"></h3>
+                                            </div>
+                                        </div>
+                                        <!-- /.col-sm-6 col-md-6 -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- bullet chart -->
+                    <div class="row introCopy">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="chart-wrapper">
+                                <div class="chart-title">
+                                    <h3>Shortfall Position</h3>
+                                </div>
+                                <div class="chart-stage">
+                                    <div id="test-horizontal"></div>
+                                </div>
+                                <div class="chart-notes">
+                                    <span>Bullet charts containing shortfall position</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.col-sm-12 col-md-12 -->
+                    </div>
+                    <!--/.row -->
+
+                    <!-- explainer -->
+                    
+                    <div class="row introCopy">
+                    	<div class="col-sm-12 col-md-12">
+                    		<div class="chart-wrapper">
+                    			<div class="chart-stage">
+                    				<h3>How to Read a Bullet</h3>
+                    				<div id="bullet-visual-wrapper">
+                    				</div>
+                    			</div>
+                    		</div>
+                    	</div>
+                    </div>
+
+                    <!-- table -->
+                    <div class="row introCopy">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="chart-wrapper">
+                                <div class="chart-title">
+                                    <h3>Source Data</h3>
+                                </div>
+                                <div class="chart-stage">
+                                    <table class="table table-bordered table-condense" id="shortfall-table"></table>
+                                </div>
+                                <div class="chart-notes">
+                                    <span>Table containing pipeline data</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.col-sm-6 col-md-6 -->
+                    </div>
+                    <!--/.row -->
+
+                </div>
+                <!-- /.main -->
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </form>
+    <!-- #Form1 -->
+
+    <!-- SharePoint Core JavaScript -->
+    <!--<script type="text/javascript" src="/_layouts/15/MicrosoftAjax.js"></script>-->
+    <!--<script type="text/javascript" src="/_layouts/1033/init.js"></script>-->
+    <!--<script type="text/javascript" src="/_layouts/15/sp.core.js"></script>-->
+    <!--<script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>-->
+    <!--<script type="text/javascript" src="/_layouts/15/sp.js"></script>-->
+
+    <!-- SharePoint PeoplePicker JavaScript -->
+    <!--<script type="text/javascript" src="/_layouts/15/clienttemplates.js"></script>-->
+    <!--<script type="text/javascript" src="/_layouts/15/clientforms.js"></script>-->
+    <!--<script type="text/javascript" src="/_layouts/15/clientpeoplepicker.js"></script>-->
+    <!--<script type="text/javascript" src="/_layouts/15/autofill.js"></script>-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="../SiteAssets/jquery/jquery-1.12.1.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript" src="../SiteAssets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- D3 Core JavaScript -->
+    <script type="text/javascript" src="../SiteAssets/d3/d3.v3.min.js" charset="utf-8"></script>
+    <!-- D3 Queue JavaScript -->
+    <script type="text/javascript" src="../SiteAssets/d3/d3-queue.v2.min.js" charset="utf-8"></script>
+    <!-- Crossfilter JavaScript -->
+    <script type="text/javascript" src="../SiteAssets/crossfilter/crossfilter.min.js"></script>
+    <!-- Moment Core JavaScript -->
+    <script type="text/javascript" src="../SiteAssets/moment/moment.js"></script>
+    <!-- Custom build of dc.js -->
+    <!-- https://github.com/dc-js/dc.js/pull/923/files -->
+    <script type="text/javascript" src="../SiteAssets/dc/dc.min.js"></script>
+    <!-- d3.js Bullet Chart -->
+    <script src="../SiteAssets/js/bullet.js"></script>
+
+    <!-- Custom JavaScript -->
+    <!--<script type="text/javascript" src="../SiteAssets/js/getUser.js"></script>-->
+    <script type="text/javascript">
+        // tooptip
+        var tooltip = d3.select("body")
+            .append("div")
+            .style({
+                "position": "absolute",
+                "z-index": "10",
+                "visibility": "hidden"
+            })
+            .attr({
+                "class": "tooltip introCopy"
+            });
+
+        var currFormat = d3.format("$,.0f");
+
+        var chartWidth = 1440;
+        
+        var margin = {
+                top: 5,
+                right: 40,
+                bottom: 20,
+                left: 120
+            },
+            width = 960 - margin.left - margin.right,
+            height = 50 - margin.top - margin.bottom;
+    
+        var chart = d3.bullet()
+            .width(width)
+            .height(height);
+        
+
+
+        // if this JavaScript source file resides on a SharePoint server
+        // the function will return an endpoint Url pointing to a specified SharePoint list
+        // if not, the endpoint will point to a json file
+        function getData() {
+
+            var siteUrl = "";
+            var test = "";
+            var columns = '';
+            var expand = '';
+            var top = '';
+
+            function callData(test, list, columns, expand, top) {
+
+                var url = "",
+                    endpoint;
+
+                if (!test) {
+                    url = siteUrl + "/_api/web/lists/GetByTitle('" + list + "')/items?$select=" + columns + "&$expand=" + expand + "&$top=" + top;
+                    endpoint = d3.json(url).header("accept", "application/json;odata=nometadata");
+
+                }
+                else {
+                    url = "../SiteAssets/data/" + list + ".json";
+                    endpoint = d3.json(url);
+                }
+
+                return endpoint;
+
+            }
+
+            try {
+                if (typeof _spPageContextInfo.webServerRelativeUrl !== undefined) {
+                    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+                    siteUrl = _spPageContextInfo.webAbsoluteUrl;
+                    test = false;
+                }
+            }
+            catch (e) {
+                siteUrl = undefined;
+                test = true;
+            }
+
+            columns = "ID,Project,TotalCommitment,ProgramCommitment,FieldSiteCommitment,Notes,Created,Modified,FiscalYear/Title,FundingStatus/Id,FundingStatus/Title,Donor/Title,Program/Title,DonorType/Title,FieldSite/Title,Duration/Title,Author/Title,Editor/Title";
+            expand = "FiscalYear,FundingStatus,Donor,Program,DonorType,FieldSite,Duration,Author,Editor";
+            top = 500;
+            var grantsEndpoint = callData(test, 'Grants', columns, expand, top);
+
+            columns = "Id,Program/Title,Program/Id,BaselineShortfall";
+            expand = "Program";
+            top = 500;
+            var shortfallEndpoint = callData(test, 'Shortfall', columns, expand, top);
+
+            columns = "Id,FiscalYear/Title,Month/Title,Program/Title,Transaction";
+            expand = "FiscalYear,Month,Program";
+            top = 500;
+            var shortfallLogEndpoint = callData(test, 'ShortfallLog', columns, expand, top);
+
+            // Get the data
+            d3_queue.queue()
+                .defer(grantsEndpoint.get)
+                .defer(shortfallEndpoint.get)
+                .defer(shortfallLogEndpoint.get)
+                .await(createViz);
+
+        }
+
+        function createViz(error, grants, shortfall, shortfallLog) {
+
+            if (error) throw error;
+
+            var programs = d3.nest().key(d => {
+                return d.Program.Title;
+            }).key(d => {
+                return d.FiscalYear.Title == 2017;
+            }).rollup(leaves => {
+                return {
+                    "count": leaves.filter(g => {
+                        return g.FundingStatus.Title == 'Approved' || g.FundingStatus.Title == 'Booked';
+                    }).length,
+                    "pipeline": d3.sum(leaves.filter(g => {
+                        return g.FundingStatus.Title == 'Approved';
+                    }), d => {
+                        return d.TotalCommitment;
+                    }),
+                    "success": d3.sum(leaves.filter(g => {
+                        return g.FundingStatus.Title == 'Booked';
+                    }), d => {
+                        return d.TotalCommitment;
+                    })
+                };
+            }).map(grants.value);
+            var log = d3.nest().key(d => {
+                return d.Program.Title;
+            }).key(d => {
+                return d.FiscalYear.Title == 2017;
+            }).rollup(leaves => {
+                return {
+                    "count": leaves.length,
+                    "amount": d3.sum(leaves, d => {
+                        return d.Transaction;
+                    })
+                }
+            }).map(shortfallLog.value);
+
+            var data = [];
+            shortfall.value.forEach(d => {
+                var program = d.Program.Title;
+                var item = {};
+                console.log(program);
+
+                if (!programs[program]) programs[program] = {};
+                if (!programs[program][true]) programs[program][true] = {};
+                if (!log[program]) {
+                    log[program] = {};
+                    log[program][true] = {};
+                }
+                if (!programs[program][true].pipeline) programs[program][true].pipeline = 0;
+                if (!programs[program][true].success) programs[program][true].success = 0;
+                programs[program][true]['baseline'] = d.BaselineShortfall;
+                if (!log[program][true].amount) log[program][true].amount = 0;
+                programs[program][true]['new'] = log[program][true].amount;
+                programs[program][true]['cumulative'] = d.BaselineShortfall + log[program][true].amount;
+
+                item[program] = programs[program][true];
+                data.push(item);
+            });
+
+            var bullet = dc.bulletChart("#test-horizontal"),
+                shortfallTable = dc.dataTable('#shortfall-table')
+
+            var cumulative = d3.max(data, d => {
+                return d[d3.keys(d)[0]].cumulative;
+            });
+            console.log(cumulative);
+
+            dataset = data.map(d => {
+                var ranges = [];
+                var measures = [];
+                var markers = [];
+                d.title = d3.keys(d)[0];
+                d.subtitle = null;
+                d.baseline = d[d.title].baseline;
+                d.new = d[d.title].new;
+                d.cumulative = d[d.title].cumulative;
+                d.pipeline = d[d.title].pipeline;
+                d.success = d[d.title].success;
+                if (d.success - d.cumulative > 0) {
+                    d.remaining = 0;
+                }
+                else {
+                    d.remaining = Math.abs(d.success - d.cumulative);
+                }
+                if (d.remaining - d.pipeline < 0) {
+                    d.gap = 0;
+                }
+                else {
+                    d.gap = Math.abs(d.remaining - d.pipeline);
+
+                }
+                ranges.push(d.baseline + d.new);
+                ranges.push(d.baseline);
+                ranges.push(cumulative);
+                measures.push(d.pipeline);
+                measures.push(d.cumulative);
+                markers.push(d.success);
+                // markers.push(d.baseline);
+                d.ranges = ranges;
+                d.measures = measures;
+                d.markers = markers;
+                return {
+                    "title": d.title,
+                    "subtitle": d.subtitle,
+                    "baseline": d.baseline,
+                    "new": d.new,
+                    "cumulative": d.cumulative,
+                    "pipeline": d.pipeline,
+                    "success": d.success,
+                    "remaining": d.remaining,
+                    "gap": d.gap,
+                    "ranges": d.ranges,
+                    "measures": d.measures,
+                    "markers": d.markers
+                };
+            });
+
+            var ndx = crossfilter(dataset),
+                titleDimension = ndx.dimension(d => {
+                    return d.title;
+                }),
+                idDim = ndx.dimension(d => {
+                    return d.title;
+                }),
+                statusGroup = {
+                    all: () => {
+                        return dataset;
+                    }
+                };
+
+            // dims from Mike Bostock's bl.ock, http://bl.ocks.org/mbostock/4061961
+            bullet
+                .width(chartWidth)
+                .height(450)
+                .bulletMargin({
+                    top: 5,
+                    right: 40,
+                    bottom: 0,
+                    left: 165
+                })
+                .bulletWidth(chartWidth - 120 - 40)
+                .bulletHeight(50 - 5 - 20)
+                .orient("left")
+                .dimension(titleDimension)
+                .group(statusGroup);
+
+            bullet.on('renderlet', d => {
+                d.selectAll(".axis .tick text").text(d => {
+                    return d3.format("s")(d);
+                });
+            });
+
+            bullet.on('postRender', chart => {
+
+                var marker = d3.selectAll('line.marker');
+                var measure_s1 = d3.selectAll('rect.measure.s1');
+                var measure_s0 = d3.selectAll('rect.measure.s0');
+                var range_s2 = d3.selectAll('rect.range.s2');
+                var range_s1 = d3.selectAll('rect.range.s1');
+                var range_s0 = d3.selectAll('rect.range.s0');
+
+                marker.on('mouseover', d => {
+                    showDetail(d, 'Fundraising Success');
+                }).on('mouseout', () => {
+                    hideDetail();
+                });
+                range_s2.on('mouseover', function(d) {
+                    var baselineShortfall = +d3.select(this.parentElement).data()[0].baseline;
+                    showDetail(d, 'Board-approved Shortfall');
+                }).on('mouseout', () => {
+                    hideDetail();
+                });
+                range_s1.on('mouseover', function() {
+                    var newShortfall = +d3.select(this.parentElement).data()[0].new;
+                    showDetail(newShortfall, 'Additional Shortfall');
+                }).on('mouseout', () => {
+                    hideDetail();
+                });
+                measure_s1.on('mouseover', d => {
+                    showDetail(d, 'Fundraising Pipeline');
+                }).on('mouseout', () => {
+                    hideDetail();
+                });
+                measure_s0.on('mouseover', function() {
+                    var text = 'Pipeline Gap';
+                    var pipelineGap = +d3.select(this.parentElement).data()[0].gap;
+                    var pipeline = +d3.select(this.parentElement).data()[0].pipeline;
+                    var value = pipelineGap;
+                    if (pipelineGap == 0 && pipeline > 0) {
+                        text = 'Fundraising Pipeline';
+                        value = pipeline;
+                    }
+                    showDetail(value, text);
+                }).on('mouseout', () => {
+                    hideDetail();
+                });
+            });
+
+            shortfallTable
+                .dimension(idDim)
+                .group(d => {
+                    return d;
+                })
+                .size(500)
+                .columns([{
+                    label: 'Program',
+                    format: d => {
+                        return d.title;
+                    }
+                }, {
+                    label: 'Baseline Shortfall',
+                    format: d => {
+                        return currFormat(d.baseline);
+                    }
+                }, {
+                    label: 'Additional Shortfall',
+                    format: d => {
+                        return currFormat(d.new);
+                    }
+                }, {
+                    label: 'Cumulative Shortfall',
+                    format: d => {
+                        return currFormat(d.cumulative);
+                    }
+                }, {
+                    label: 'Fundraising Success',
+                    format: d => {
+                        return currFormat(d.success);
+                    }
+                }, {
+                    label: 'Remaining Shortfall',
+                    format: d => {
+                        return currFormat(d.remaining);
+                    }
+                }, {
+                    label: 'Fundraising Pipeline',
+                    format: d => {
+                        return currFormat(d.pipeline);
+                    }
+                }, {
+                    label: 'Pipeline Gap',
+                    format: d => {
+                        return currFormat(d.gap);
+                    }
+                }]);
+
+            shortfallTable.on('renderlet', () => {
+                shortfallTable.select('tr.dc-table-group').remove(); // remove unneccesary row dc.js adds beneath the header)
+                shortfallTable.selectAll('.dc-table-head:nth-child(n+2)').style('text-align', 'right');
+                shortfallTable.selectAll('.dc-table-column:nth-child(n+2)').style('text-align', 'right');
+                // shortfallTable.selectAll('.dc-table-column._1').style('text-align', 'right');
+                // shortfallTable.selectAll('.dc-table-column._2').style('text-align', 'right');
+                // shortfallTable.selectAll('.dc-table-column._3').style('text-align', 'right');
+                // shortfallTable.selectAll('.dc-table-column._4').style('text-align', 'right');
+                // shortfallTable.selectAll('.dc-table-column._5').style('text-align', 'right');
+                // shortfallTable.selectAll('.dc-table-column._6').style('text-align', 'right');
+                // ensure one thead
+                var thead = shortfallTable.selectAll('thead').data([0]);
+                thead.enter().append('thead');
+                thead.exit().remove();
+            });
+
+
+            dc.renderAll();
+
+            ////////////////////////////////////////////////////////////
+        	////////////// Create Bullet Chart Explainer ///////////////
+        	////////////////////////////////////////////////////////////
+        
+            var svg = d3.select("#bullet-visual-wrapper").selectAll("svg")
+                .data([{"title":"Executive","subtitle":null,"ranges":[125,150,170],"measures":[120,150],"markers":[50]}])
+                .enter().append("svg")
+                .attr("class", "bullet")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height * 3 + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .call(chart);
+        
+            var title = svg.append("g")
+                .style("text-anchor", "end")
+                .attr("transform", "translate(-6," + height / 2 + ")");
+        
+            title.append("text")
+                .attr("class", "title")
+                .text(function(d) {
+                    return d.title;
+                });
+                
+            svg.append('line')
+            	.attr("x1", 250)
+            	.attr("y1", 24)
+            	.attr("x2", 250)
+            	.attr("y2", 120)
+            	.attr("class","range0-line")
+            	.style({
+            	    "stroke": "#000",
+            	    "strok-width": "8px"
+            	});
+
+            svg.append('circle')
+            	.attr("cx", 500)
+            	.attr("cy", 13)
+            	.attr("r", 2)
+            	.attr("class","measure0-circle")
+            	.style("fill","#000");
+            	
+            svg.append('line')
+            	.attr("x1", 500)
+            	.attr("y1", 12)
+            	.attr("x2", 500)
+            	.attr("y2", 120)
+            	.attr("class","measure0-line")
+            	.style({
+            	    "stroke": "#000",
+            	    "strok-width": "8px"
+            	});
+                
+        	
+            // Change the date header to reflect the date and time of the data
+            d3.select('#dateHeader').text(' Data as of ' + moment().format('LLL'));
+
+
+            // Show tooltip on hover
+            function showDetail(d, text) {
+
+                var amount = d3.format("$,2f")(d);
+
+                var content = "<b>" + text + ": </b>" + amount + "<br/>";
+
+                return tooltip.style({
+                        "visibility": "visible",
+                        "top": (event.pageY - 10) + "px",
+                        "left": (event.pageX + 10) + "px"
+                    })
+                    .html(content);
+            }
+
+            // Hide tooltip on hover
+            function hideDetail() {
+
+                // hide tooltip
+                return tooltip.style("visibility", "hidden");
+            }
+
+
+        }
+
+        $(document).ready(() => {
+            getData();
+        });
+    </script>
+
+</body>
+
+</html>
