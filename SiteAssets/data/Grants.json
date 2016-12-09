@@ -2924,7 +2924,7 @@
         "Title": "Individual"
       },
       "Program": {
-        "Title": "Pacific Tuna Iniative"
+        "Title": "Pacific Tuna Initiative"
       },
       "FieldSite": {
         "Title": "Pacific Islands"
@@ -5594,6 +5594,123 @@
       "ID": 187,
       "Modified": "2016-11-30T18:16:09Z",
       "Created": "2016-11-28T16:30:16Z"
+    },
+    {
+      "FiscalYear": {
+        "Title": "2017"
+      },
+      "Donor": {
+        "Title": "Hawai‘i Community Foundation"
+      },
+      "DonorType": {
+        "Title": "Foundation"
+      },
+      "Program": {
+        "Title": "Hawaii"
+      },
+      "FieldSite": {
+        "Title": "None"
+      },
+      "Duration": {
+        "Title": "1"
+      },
+      "FundingStatus": {
+        "Id": 3,
+        "Title": "Approved"
+      },
+      "Author": {
+        "Title": "Ashleigh McGovern"
+      },
+      "Editor": {
+        "Title": "Ashleigh McGovern"
+      },
+      "Id": 189,
+      "Project": "HI Flexible",
+      "TotalCommitment": 20000,
+      "ProgramCommitment": 10000,
+      "FieldSiteCommitment": 10000,
+      "Notes": "Traut Carson Fund at the Hawaii Community Foundation",
+      "ID": 189,
+      "Modified": "2016-12-01T19:14:29Z",
+      "Created": "2016-12-01T19:14:29Z"
+    },
+    {
+      "FiscalYear": {
+        "Title": "2017"
+      },
+      "Donor": {
+        "Title": "Walton Family Foundation"
+      },
+      "DonorType": {
+        "Title": "Foundation"
+      },
+      "Program": {
+        "Title": "Connected Oceans"
+      },
+      "FieldSite": {
+        "Title": "Eastern Tropical Pacific Seascape"
+      },
+      "Duration": {
+        "Title": "2"
+      },
+      "FundingStatus": {
+        "Id": 1,
+        "Title": "Development"
+      },
+      "Author": {
+        "Title": "Ashleigh McGovern"
+      },
+      "Editor": {
+        "Title": "Ashleigh McGovern"
+      },
+      "Id": 190,
+      "Project": "ETPS Maintenance Grant ",
+      "TotalCommitment": 500000,
+      "ProgramCommitment": 0,
+      "FieldSiteCommitment": 500000,
+      "Notes": null,
+      "ID": 190,
+      "Modified": "2016-12-02T18:25:12Z",
+      "Created": "2016-12-02T18:25:12Z"
+    },
+    {
+      "FiscalYear": {
+        "Title": "2017"
+      },
+      "Donor": {
+        "Title": "Walton Family Foundation"
+      },
+      "DonorType": {
+        "Title": "Foundation"
+      },
+      "Program": {
+        "Title": "Connected Oceans"
+      },
+      "FieldSite": {
+        "Title": "Bird's Head Seascape"
+      },
+      "Duration": {
+        "Title": "2"
+      },
+      "FundingStatus": {
+        "Id": 1,
+        "Title": "Development"
+      },
+      "Author": {
+        "Title": "Ashleigh McGovern"
+      },
+      "Editor": {
+        "Title": "Ashleigh McGovern"
+      },
+      "Id": 191,
+      "Project": "BHS maintenance grant",
+      "TotalCommitment": 500000,
+      "ProgramCommitment": 0,
+      "FieldSiteCommitment": 500000,
+      "Notes": null,
+      "ID": 191,
+      "Modified": "2016-12-02T18:25:55Z",
+      "Created": "2016-12-02T18:25:55Z"
     }
   ]
 }
