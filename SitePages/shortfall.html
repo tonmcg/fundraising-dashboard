@@ -146,18 +146,19 @@
                     <!--/.row -->
 
                     <!-- explainer -->
-                    
-                    <div class="row introCopy">
-                    	<div class="col-sm-12 col-md-12">
-                    		<div class="chart-wrapper">
-                    			<div class="chart-stage">
-                    				<h3>How to Read a Bullet</h3>
-                    				<div id="bullet-visual-wrapper">
-                    				</div>
-                    			</div>
-                    		</div>
-                    	</div>
-                    </div>
+                    <!--<div class="row introCopy">-->
+                    <!--	<div class="col-sm-12 col-md-12">-->
+                    <!--		<div class="chart-wrapper">-->
+                    <!--			<div class="chart-stage">-->
+                    <!--				<h3>How to Read a Bullet</h3>-->
+                    <!--				<div id="bullet-visual-wrapper">-->
+                    <!--				</div>-->
+                    <!--			</div>-->
+                    <!--		</div>-->
+                    <!--	</div>-->
+                    	<!--/.col-sm-12 col-md-12 -->
+                    <!--</div>-->
+                    <!--/.row -->
 
                     <!-- table -->
                     <div class="row introCopy">
@@ -497,7 +498,7 @@
                 });
                 range_s1.on('mouseover', function() {
                     var newShortfall = +d3.select(this.parentElement).data()[0].new;
-                    showDetail(newShortfall, 'Additional Shortfall');
+                    showDetail(newShortfall, 'Changes to Shortfall');
                 }).on('mouseout', () => {
                     hideDetail();
                 });
@@ -538,7 +539,7 @@
                         return currFormat(d.baseline);
                     }
                 }, {
-                    label: 'Additional Shortfall',
+                    label: 'Changes to Shortfall',
                     format: d => {
                         return currFormat(d.new);
                     }
@@ -553,7 +554,7 @@
                         return currFormat(d.success);
                     }
                 }, {
-                    label: 'Remaining Shortfall',
+                    label: 'Remaining Shortfall to Cover',
                     format: d => {
                         return currFormat(d.remaining);
                     }

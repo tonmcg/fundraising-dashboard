@@ -7,42 +7,37 @@
     },
     {
       "Id": 2,
-      "Title": "Seascapes",
+      "Title": "Connected Oceans",
       "ID": 2
     },
     {
       "Id": 3,
-      "Title": "Marine Climate Change",
+      "Title": "Climate Solutions",
       "ID": 3
     },
     {
-      "Id": 4,
-      "Title": "Ocean Health Index",
-      "ID": 4
-    },
-    {
       "Id": 5,
-      "Title": "Large Scale MPAs",
+      "Title": "Learning Communities",
       "ID": 5
     },
     {
       "Id": 6,
-      "Title": "Pacific Rising",
+      "Title": "DF Anote Tong",
       "ID": 6
     },
     {
       "Id": 7,
-      "Title": "Tuna",
+      "Title": "Pacific Tuna Initiative",
       "ID": 7
     },
     {
       "Id": 8,
-      "Title": "Fisheries",
+      "Title": "Resilient Fisheries",
       "ID": 8
     },
     {
       "Id": 9,
-      "Title": "Mariculture",
+      "Title": "Aquaculture",
       "ID": 9
     },
     {
@@ -64,6 +59,11 @@
       "Id": 13,
       "Title": "Hawaii",
       "ID": 13
+    },
+    {
+      "Id": 14,
+      "Title": "Policy + Governance",
+      "ID": 14
     }
   ]
 }
