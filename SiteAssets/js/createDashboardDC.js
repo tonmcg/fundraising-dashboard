@@ -197,6 +197,9 @@ function createViz(error, data) {
         commitmentByStatus = statusDim.group().reduceSum(function(d) {
             return d.TotalCommitment;
         }),
+        commitmentByFY = fiscalYearDim.group().reduceSum(function(d) {
+            return d.TotalCommitment;
+        }),
         netFieldCommitments = ndx.groupAll().reduceSum(function(d) {
             return d.FieldSiteCommitment;
         }),
@@ -207,40 +210,13 @@ function createViz(error, data) {
             return d.TotalCommitment;
         });
 
-    var fiscalYears = fiscalYearDim.group().top(Infinity).map(function(d) {
-        return d.key;
-    }).sort(function(a, b) {
-        return a - b;
-    });
-
     var programs = programDim.group().top(Infinity).map(function(d) {
         return d.key;
     });
     
-    // drop down selection
-    var selector = d3.select("#fiscalYears");
-
-    // append option values to fiscal year select input
-    selector.selectAll("option")
-        .data(fiscalYears)
-        .enter()
-        .append("option")
-        .attr("value", function(d) {
-            return d;
-        })
-        .text(function(d) {
-            return d;
-        });
-
-    // set default fiscal year
-    // define on change event
-    selector.property("value", fiscalYear).on("change", function() {
-        fiscalYearDim.filter(this.value);
-        dc.redrawAll();
-    });
-
     // dc.js chart types
-    var totalCommitments = dc.numberDisplay("#total-commitments"),
+    var select = dc.selectMenu('#fiscalYear'),
+        totalCommitments = dc.numberDisplay("#total-commitments"),
         fieldCommitments = dc.numberDisplay("#field-commitments"),
         programCommitments = dc.numberDisplay("#program-commitments"),
         donorBarChart = dc.barChart("#chart-bar-donor"),
@@ -249,6 +225,32 @@ function createViz(error, data) {
         commitBarChart = dc.barChart("#chart-bar-commit"),
         dataCount = dc.dataCount('#data-count'),
         dataTable = dc.dataTable('#data-table');
+        
+    // menuselect
+    select
+        .dimension(fiscalYearDim)
+        .group(commitmentByFY)
+        // .filterDisplayed(function () {
+        //     return true;
+        // })
+        .multiple(false)
+        .numberVisible(null)
+        // .order(function (a,b) {
+        //     return a.key > b.key ? 1 : b.key > a.key ? -1 : 0;
+        // })
+        .title(function(d) {
+            return d.key;
+        })
+        .promptText('All Years')
+        .promptValue(null);
+
+    select.on('pretransition', function(chart) {
+        // add styling to select input
+        d3.select('#fiscalYear').classed('dc-chart', false);
+        chart.select('select').classed('form-control', true);
+    });
+    
+    select.filter(fiscalYear);
     
     // charts
     totalCommitments
@@ -505,7 +507,6 @@ function createViz(error, data) {
 
         });
 
-    fiscalYearDim.filter(fiscalYear);
     dc.renderAll();
 
     // Change the date header to reflect the date and time of the data

@@ -6,16 +6,16 @@
 <html>
 
 <head>
-<meta name="WebPartPageExpansion" content="full" />
-<meta charset="utf-8" />
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="WebPartPageExpansion" content="full" />
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta content="width=device-width, initial-scale=1" name="viewport">	
+	<meta content="width=device-width, initial-scale=1" name="viewport" />	
 
 	<title>Center for Oceans Dashboard</title>
 
 	<!-- Bootstrap Core CSS -->
-	<link rel="stylesheet" type="text/css" href="../SiteAssets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../SiteAssets/bootstrap/css/bootstrap.min.css" />
 
 	<!-- DC Core CSS -->
 	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/dc.css" />
@@ -24,13 +24,13 @@
 	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/keen-dashboards.css" />
 
 	<!-- CI CSS -->
-	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/mq.css">
+	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/mq.css" />
 
 	<!-- CI Header CSS -->
-	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/customHeaderGlobal.css">
+	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/customHeaderGlobal.css" />
 
 	<!-- Custom CSS -->
-	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/custom.css">
+	<link rel="stylesheet" type="text/css" href="../SiteAssets/css/custom.css" />
 
 	<style type="text/css">
 		svg,
@@ -153,15 +153,12 @@
 							<div class="chart-wrapper">
 								<div class="chart-title">
 									<div class="row">
-										<div class="col-sm-8 col-md-8">
+										<div class="col-sm-8 col-md-10">
 											<h3 class="text-uppercase">Pipeline Overview</h3>
 										</div>
-										<div class="col-sm-4 col-md-4">
-											<!--<div class="form-group">-->
-												<label class="pull-right" for="fiscalYears">
-													<select class="form-control" id="fiscalYears"></select>
-												</label>
-											<!--</div>-->
+										<div class="col-sm-4 col-md-2">
+	                                        <h5 class="text-uppercase">Fiscal Year</h5>
+    	                                    <div id="fiscalYear"></div>
 										</div>
 									</div>
 								</div>
@@ -422,7 +419,7 @@
 	<!-- Crossfilter JavaScript -->
 	<script type="text/javascript" src="../SiteAssets/crossfilter/crossfilter.min.js"></script>
 	<!-- DC.js Core JavaScript -->
-	<script type="text/javascript" src="../SiteAssets/dc/dc.js"></script>
+	<script type="text/javascript" src="../SiteAssets/dc/dc.min.js"></script>
 	<!-- Moment Core JavaScript -->
 	<script type="text/javascript" src="../SiteAssets/moment/moment.js"></script>
 	<!-- SheetJS JavaScript -->
@@ -432,7 +429,7 @@
 	<script type="text/javascript" src="../SiteAssets/sheetJS/Export2Excel.js"></script>	
 	<!-- Custom JavaScript -->
 	<script type="text/javascript" src="../SiteAssets/js/getUser.js"></script>
-	<script type="text/javascript" src="../SiteAssets/js/createDashboardTest.js"></script>
+	<script type="text/javascript" src="../SiteAssets/js/createDashboardDC.js"></script>
 
 </body>
 
