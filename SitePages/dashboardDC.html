@@ -118,53 +118,52 @@
 		<div id="main" class="w3-main">
 
 			<!-- Header -->
-			<header class="w3-padding-8">
-				<div class="w3-container">
-					<!-- numerical displays -->
-					<div class="w3-row-padding w3-container w3-card-4 w3-white title1" id="header" style="padding-top:25px">
-						<div class="w3-col l12">
-							<span>Fiscal Year Dashboard</span>
-						</div>
-						<div class="w3-row-padding introCopy">
-							<div class="w3-col l12">
-								<div class="w3-row-padding">
-									<div class="w3-col l17">
+			<header class="w3-container">
+				<!-- Header Row -->
+				<div class="w3-row-padding">
+					<!-- Header Container -->
+					<div class="w3-container w3-padding-4">
+						<!-- displays -->
+						<div class="w3-row-padding">
+							<!-- numerical displays -->
+							<div class="w3-container w3-card-4 w3-white title1" id="header" style="padding-top:25px">
+								<div class="w3-col l12">
+									<span>Fiscal Year Dashboard</span>
+								</div>
+								<div class="w3-row-padding introCopy">
+									<div class="w3-col l12">
 										<div class="w3-row-padding">
-											<div class="w3-col l3">
+											<div class="w3-col l2">
 												<h5 class="text-uppercase">Fiscal Year</h5>
 												<div id="fiscalYear"></div>
 											</div>
-											<div class="w3-col l3">
+											<div class="w3-col l1">
 												<div><span class="text-uppercase">Total</span></div>
 												<div>
 													<div class="dc-data-count" id="total-commitments"></div>
 												</div>
 											</div>
-											<div class="w3-col l3">
+											<div class="w3-col l1">
 												<div><span>To Field Sites</span></div>
 												<div>
 													<div class="dc-data-count" id="field-commitments"></div>
 												</div>
 											</div>
-											<div class="w3-col l3">
+											<div class="w3-col l1">
 												<div><span>To Program</span></div>
 												<div>
 													<div class="dc-data-count" id="program-commitments"></div>
 												</div>
 											</div>
-										</div>
-									</div>	
-									<div class="w3-col l14">
-										<div id="data-count" class="w3-row-padding" style="float:none">
-											<div class="w3-col l4">
-												<div>
+											<div class="w3-col l2">
+												<div id="data-count" style="float:none">
 													<span class="text-uppercase">Selected</span>
 												</div>
 												<div class="dc-data-count">
 													<span class="number-display filter-count"></span>
 												</div>
 											</div>
-											<div class="w3-col l4">
+											<div class="w3-col l2">
 												<div>
 													<span>Out of</span>
 												</div>
@@ -172,29 +171,30 @@
 													<span class="number-display total-count"></span>
 												</div>
 											</div>
-											<div class="w3-col l4">
+											<div class="w3-col l2">
 												<div class="dc-chart w3-pull-right">
 													<h3 id="dateHeader"></h3>
 												</div>
 											</div>
+											<div class="w3-col l1">
+												<div><span><a href='javascript:dc.filterAll();dc.redrawAll();'><font class="text-uppercase" color="#3182bd">Reset All</font></a></span></div>
+											</div>
 										</div>
+										<!-- .w3-row-padding -->
 									</div>
-									<div class="w3-col l1">
-										<div><span><a href='javascript:dc.filterAll();dc.redrawAll();'><font class="text-uppercase" color="#3182bd">Reset All</font></a></span></div>
-									</div>
+									<!-- .w3-col l12 -->
 								</div>
-								<!-- /.row -->
+								<!-- End Numerical Displays -->
 							</div>
 						</div>
-						<!-- End Numerical Displays -->
 					</div>
 				</div>
-				<!-- /.main -->
+				<!-- /.w3-row-padding -->
 			</header>
 			<!-- End Header -->
 
 			<!-- Main Content Container -->
-			<div class="w3-container" id="dashboard">
+			<div class="w3-container introCopy" id="dashboard">
 				<!-- Main Content Row -->
 				<div class="w3-row-padding">
 					<!-- Main Content Container -->
@@ -202,14 +202,14 @@
 						<!-- row chart and data table -->
 						<div class="w3-row-padding">
 							<!-- Row Chart -->
-							<div class="w3-col l8 w3-padding-4 introCopy">
+							<div class="w3-col l8 w3-padding-4">
 								<div class="w3-container w3-card-4 w3-white" id="rowChart">
 									<!-- Header -->
 									<header class="w3-padding-4">
 										<h4 class="title">By Program
 										</h4>
-										<p class="category">
-										</p>
+										<!--<p class="category">-->
+										<!--</p>-->
 									</header>
 									<!-- End Header -->
 									<!-- Chart -->

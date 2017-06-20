@@ -235,7 +235,7 @@ function createViz(error, data) {
     
     const tableHeaderHeight = document.querySelector('#tableChart header').offsetHeight;
     const tableFooterHeight = document.querySelector('#tableChart footer').offsetHeight;
-    const tableHeight = (dashboardHeight - headerHeight - footerHeight - tableHeaderHeight - tableFooterHeight) * 1 / 3 * 0.85;
+    const tableHeight = (dashboardHeight - headerHeight - footerHeight - tableHeaderHeight - tableFooterHeight) * 1 / 4 * 0.85;
     
     const tableWidth = document.querySelector('#tableChart footer').clientWidth; // does not include margin, padding, or scroll bar widths
     
