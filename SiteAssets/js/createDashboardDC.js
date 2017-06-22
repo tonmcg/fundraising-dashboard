@@ -227,15 +227,15 @@ function createViz(error, data) {
     
     const ringChartHeaderHeight = document.querySelector('#ringChart header').offsetHeight;
     const ringChartFooterHeight = document.querySelector('#ringChart footer').offsetHeight;
-    const ringChartHeight = (dashboardHeight - headerHeight - footerHeight - ringChartHeaderHeight - ringChartFooterHeight) * 1 / 3;
+    const ringChartHeight = (dashboardHeight - headerHeight - footerHeight - ringChartHeaderHeight - ringChartFooterHeight) * 1 / 2;
     
     const rowChartHeaderHeight = document.querySelector('#rowChart header').offsetHeight;
     const rowChartFooterHeight = document.querySelector('#rowChart footer').offsetHeight;
-    const rowChartHeight = (dashboardHeight - headerHeight - footerHeight - rowChartHeaderHeight - rowChartFooterHeight) * 1 / 3;
+    const rowChartHeight = (dashboardHeight - headerHeight - footerHeight - rowChartHeaderHeight - rowChartFooterHeight) * 1 / 2;
     
     const tableHeaderHeight = document.querySelector('#tableChart header').offsetHeight;
     const tableFooterHeight = document.querySelector('#tableChart footer').offsetHeight;
-    const tableHeight = (dashboardHeight - headerHeight - footerHeight - tableHeaderHeight - tableFooterHeight) * 1 / 4 * 0.85;
+    const tableHeight = (dashboardHeight - headerHeight - footerHeight - tableHeaderHeight - tableFooterHeight) * 1 / 3 * 0.85;
     
     const tableWidth = document.querySelector('#tableChart footer').clientWidth; // does not include margin, padding, or scroll bar widths
     
@@ -355,7 +355,7 @@ function createViz(error, data) {
     select.on('pretransition', function(chart) {
         // add styling to select input
         d3.select('#fiscalYear').classed('dc-chart', false);
-        chart.select('select').classed('form-control', true);
+        chart.select('select').classed('form-control', true).style("margin-top","15px");
     });
     
     select.filter(fiscalYear);
@@ -1233,7 +1233,7 @@ function createViz(error, data) {
 
     dc.renderAll();
 
-    // d3.select('.number-display').classed('top-line', true);
+    d3.select('.number-display').classed('top-line', true);
 
     // define mouseover and mouseout events
     function bindHover() {
@@ -1358,7 +1358,26 @@ function createViz(error, data) {
         });
     });
 
+    var debounce = function(fn, timeout) 
+    {
+      var timeoutID = -1;
+      return function() {
+        if (timeoutID > -1) {
+          window.clearTimeout(timeoutID);
+        }
+        timeoutID = window.setTimeout(fn, timeout);
+      }
+    };
+    
+    var debounced_draw = debounce(function() {
+      dataTable.redraw();
+    }, 50);
+    
+    $(window).resize(debounced_draw);
+
+    
 }
+
 
 
 function exportTable() {
