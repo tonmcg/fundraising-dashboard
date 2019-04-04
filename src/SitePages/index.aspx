@@ -16,11 +16,10 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<!-- Title and meta description
 	================================================== -->
-	<title>Center for Oceans Home Page</title>
+	<title>Center for Oceans</title>
 	<!-- Favicons
 	================================================== -->
-	<!-- <link href="../SiteAssets/assets/img/favicons/favicon.ico" rel="shortcut icon" type="image/ico">
-	<link href="../SiteAssets/assets/img/favicons/favico.png" rel="icon" type="image/png"> -->
+	<link href="../images/favicon.ico" rel="shortcut icon" type="image/ico">
 
 	<!-- Fonts & Icons
 	================================================== -->
@@ -77,6 +76,7 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.js"></script>
 
 	<!-- SharePoint-specific JavaScript
+	Doesn't look like we need this in SharePoint Online - T.M.
 	================================================== -->
 	<!-- <script src="/_layouts/1033/init.js"></script>
 	<script src="/_layouts/sp.core.js"></script>
@@ -89,7 +89,7 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<!-- <script src="../SiteAssets/views/form.vue.js"></script>  -->
 	<script src="../SiteAssets/views/shortfall.vue.js"></script>
 	<script src="../SiteAssets/views/fiscalYear.vue.js"></script>
-	<!-- <script src="../SiteAssets/views/projections.vue.js"></script> -->
+	<script src="../SiteAssets/views/projections.vue.js"></script>
 
 	<script src="../SiteAssets/components/toolbar.vue.js"></script>
 	<script src="../SiteAssets/components/footer.vue.js"></script>
@@ -97,7 +97,17 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<script src="../SiteAssets/components/table.vue.js"></script> -->
 
 	<script>
-		Vue.use(VueRouter);
+		Vue.use(VueRouter, {
+			theme: {
+				primary: '#2196f3',
+				secondary: '#03a9f4',
+				accent: '#8bc34a',
+				error: '#ff5722',
+				warning: '#ff9800',
+				info: '#607d8b',
+				success: '#4caf50'
+			}
+		});
 
 		const routes = [{
 			path: '/',
@@ -110,6 +120,10 @@ PublicKeyToken=71e9bce111e9429c" %>
 		}, {
 			path: '/shortfall',
 			component: shortfall,
+			props: true
+		}, {
+			path: '/projections',
+			component: projections,
 			props: true
 		}]
 

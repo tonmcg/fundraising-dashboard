@@ -1,5 +1,5 @@
 Vue.component("footbar", {
-    template: `<div>
+  template: `<div>
   <v-footer app height="auto">
     <v-layout justify-center row wrap>
       <v-flex>
@@ -9,7 +9,7 @@ Vue.component("footbar", {
               <v-icon size="24px">{{ icon.name }}</v-icon>
             </v-btn>
           </v-card-text>
-          <v-card-text class="white--text pt-0">Questions? Contact Ashleigh McGovern, Senior Director for Development at <a style="color:#fff;" href="mailto&#58;amcgovern@conservation.org?subject=Question%20on%20Fundraising%20Site&amp;body=Ashleigh&#58;">amcgovern@conservation.org</a> or at extension 2494.</v-card-text>
+          <v-card-text class="white--text pt-0">Questions? Contact Ashleigh McGovern, Senior Director of Development + Innovation at <a style="color:#fff;" href="mailto&#58;amcgovern@conservation.org?subject=Question%20on%20Fundraising%20Site&amp;body=Ashleigh&#58;">amcgovern@conservation.org</a> or at extension 2494.</v-card-text>
           <v-divider></v-divider>
           <v-card-text white--text>
             &copy;2019 — <strong>emdata, Inc.</strong>
@@ -19,14 +19,25 @@ Vue.component("footbar", {
     </v-layout>
   </v-footer>
 </div>`,
-    data: function () {
-        return {
-            icons: [
-                { name: 'fab fa-facebook', url: 'https://www.facebook.com/conservation.intl' },
-                { name: 'fab fa-twitter', url: 'https://twitter.com/conservationorg' },
-                { name: 'fab fa-instagram', url: 'http://instagram.com/conservationorg' },
-                { name: 'fab fa-youtube', url: 'http://www.youtube.com/user/ConservationDotOrg' }
-            ]
-        };
-    }
+  data() {
+    return {
+      icons: [{
+          name: 'fab fa-facebook',
+          url: 'https://www.facebook.com/conservation.intl'
+        },
+        {
+          name: 'fab fa-twitter',
+          url: 'https://twitter.com/conservationorg'
+        },
+        {
+          name: 'fab fa-instagram',
+          url: 'http://instagram.com/conservationorg'
+        },
+        {
+          name: 'fab fa-youtube',
+          url: 'http://www.youtube.com/user/ConservationDotOrg'
+        }
+      ]
+    };
+  }
 });

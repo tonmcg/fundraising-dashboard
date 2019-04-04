@@ -1,35 +1,32 @@
 Vue.component("toolbar", {
-  template: `<div>
-  <header role="banner"
-    style="display: block;background: #fff;position: fixed;width: 100%;top: 0px;color:rgb(51, 51, 51);"></header>
-  <v-toolbar app color="grey lighten-5">
-    <v-toolbar-side-icon></v-toolbar-side-icon>
-
-    <v-toolbar-items>
-      <v-btn large flat to="/">Center for Oceans</v-btn>
-      <v-btn large flat>New Grant Form</v-btn>
-      <v-btn large flat to="/shortfall">Shortfall</v-btn>
-      <v-btn large flat to="/fiscal-year">Fiscal Year</v-btn>
-      <v-btn large flat>Projections</v-btn>
-    </v-toolbar-items>
-
-    <v-spacer></v-spacer>
-
-    <v-btn flat>
-      <span>{{ userDisplayName }}</span>
+  template: `<v-toolbar app color="grey lighten-5">
+  <v-toolbar-items>
+    <v-btn flat href="https://www.conservation.org/Pages/default.aspx" target="_blank">
+      <img width="128px" src="../images/ciLogo_Large.svg" alt="CI logo" />
     </v-btn>
+    <v-btn large flat to="/">Center for Oceans</v-btn>
+    <v-btn large flat>New Grant Form</v-btn>
+    <v-btn large flat to="/shortfall">Shortfall</v-btn>
+    <v-btn large flat to="/fiscal-year">Fiscal Year</v-btn>
+    <v-btn large flat to="/projections">Projections</v-btn>
+  </v-toolbar-items>
 
-    <v-btn icon>
-      <v-icon>search</v-icon>
-    </v-btn>
+  <v-spacer></v-spacer>
 
-    <v-btn icon v-if="isPrivileged()" :href="this.webAbsoluteUrl + '/' + this.layoutsUrl + '/viewlsts.aspx'"
-      target="_blank">
-      <v-icon>settings</v-icon>
-    </v-btn>
-  </v-toolbar>
-</div>`,
-  data: function () {
+  <v-btn flat>
+    <span>{{ userDisplayName }}</span>
+  </v-btn>
+
+  <v-btn icon>
+    <v-icon>search</v-icon>
+  </v-btn>
+
+  <v-btn icon v-if="isPrivileged()" :href="this.webAbsoluteUrl + '/' + this.layoutsUrl + '/viewlsts.aspx'"
+    target="_blank">
+    <v-icon>settings</v-icon>
+  </v-btn>
+</v-toolbar>`,
+  data() {
     return {
       users: [],
       userDisplayName: _spPageContextInfo.userDisplayName,
@@ -49,7 +46,6 @@ Vue.component("toolbar", {
     isPrivileged() {
       let that = this;
       let privileged = [];
-      console.log(this.userId);
       privileged = that.users.filter(d => {
         return d.UserId == that.userId;
       });

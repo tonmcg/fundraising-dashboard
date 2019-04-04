@@ -6,18 +6,5 @@ var fiscalYear = Vue.component('Fiscal-Year', {
 </v-container>`,
   props: {
     width: Number
-  }, 
-  data() {
-    return {
-      window: {
-        width:0,
-        height:0
-      }
-    };
-  },
-  mounted() {
-    if (this.width) {
-        this.window.width = this.width;
-    }
   }
 });
