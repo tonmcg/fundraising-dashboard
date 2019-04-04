@@ -1,0 +1,11 @@
+{
+    "sourceDirectory": "src",
+    "sharePointSiteUrl": "https://emdatadesign.sharepoint.com/fundraising-dashboard",
+    "publishingScope": "Major",
+    "authenticationType": "Digest",
+    "remoteFolders": [
+        "/SitePages/",
+        "/SiteAssets/",
+        "/images/"
+    ]
+}
