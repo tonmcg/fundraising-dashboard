@@ -9,7 +9,7 @@ Vue.component("footbar", {
               <v-icon size="24px">{{ icon.name }}</v-icon>
             </v-btn>
           </v-card-text>
-          <v-card-text class="white--text pt-0">Questions? Contact Ashleigh McGovern, Senior Director of Development + Innovation at <a style="color:#fff;" href="mailto&#58;amcgovern@conservation.org?subject=Question%20on%20Fundraising%20Site&amp;body=Ashleigh&#58;">amcgovern@conservation.org</a> or at extension 2494.</v-card-text>
+          <v-card-text class="introCopy white--text pt-0">Questions? Contact Ashleigh McGovern, Senior Director of Development + Innovation at <a style="color:#fff;" href="mailto&#58;amcgovern@conservation.org?subject=Question%20on%20Fundraising%20Site&amp;body=Ashleigh&#58;">amcgovern@conservation.org</a> or at extension 2494.</v-card-text>
           <v-divider></v-divider>
           <v-card-text white--text>
             &copy;2019 — <strong>emdata, Inc.</strong>

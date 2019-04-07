@@ -23,7 +23,8 @@ PublicKeyToken=71e9bce111e9429c" %>
 
 	<!-- Fonts & Icons
 	================================================== -->
-	<link href="https://fonts.googleapis.com/css?family=Lora:100,300,400,500,700,900" rel="stylesheet">
+	<link href="../SiteAssets/fonts.css" rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css?family=Lora:100,300,400,500,700,900" rel="stylesheet"> -->
 	<link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
 	<link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
 
@@ -33,6 +34,39 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
 
 	<style>
+		.application {
+			font-family: "ProximaNovaRegular";
+		}
+
+		h1 {
+			font-family: "ProximaNovaExCondBold";
+		}
+
+		h2 {
+			font-family: "ProximaNovaBold";
+		}
+
+		.introCopy {
+			font-family: "ProximaNovaLight";
+			font-size: 16px;
+			line-height: 24px;
+			font-weight: lighter;
+		}
+
+		.blockquote-reverse {
+			padding-right: 15px;
+			padding-left: 0;
+			text-align: right;
+			border-right: 5px solid #eee;
+			border-left: 0;
+		}
+
+		.blockquote-paragraph {
+			color: #4BB053;
+			font-size: 25pt;
+			margin: 0 0 10px;
+		}
+
 		.v-btn--active {
 			background: #0193d7 !important;
 			color: #fff !important;
@@ -52,19 +86,19 @@ PublicKeyToken=71e9bce111e9429c" %>
 	================================================== -->
 	<form runat="server">
 		<SharePoint:FormDigest ID="FormDigest1" runat="server"></SharePoint:FormDigest>
-		<!-- Vue Template
-	================================================== -->
-		<div id="app">
-			<v-app>
-				<toolbar></toolbar>
-				<v-content class="mx-4 mb-4 mt-4">
-					<router-view :width="window.width"></router-view>
-				</v-content>
-				<footbar></footbar>
-			</v-app>
-		</div>
-
 	</form>
+
+	<!-- Vue Template
+	================================================== -->
+	<div id="app">
+		<v-app>
+			<toolbar></toolbar>
+			<v-content class="mx-4 mb-4 mt-4">
+				<router-view :width="window.width"></router-view>
+			</v-content>
+			<footbar></footbar>
+		</v-app>
+	</div>
 
 	<!-- JavaScript
 	================================================== -->
@@ -86,15 +120,15 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<!-- Vue Pages and Components
 	================================================== -->
 	<script src="../SiteAssets/views/home.vue.js"></script>
-	<!-- <script src="../SiteAssets/views/form.vue.js"></script>  -->
+	<script src="../SiteAssets/views/newGrant.vue.js"></script>
 	<script src="../SiteAssets/views/shortfall.vue.js"></script>
 	<script src="../SiteAssets/views/fiscalYear.vue.js"></script>
 	<script src="../SiteAssets/views/projections.vue.js"></script>
 
 	<script src="../SiteAssets/components/toolbar.vue.js"></script>
 	<script src="../SiteAssets/components/footer.vue.js"></script>
-	<!-- <script src="../SiteAssets/components/form.vue.js"></script>
-	<script src="../SiteAssets/components/table.vue.js"></script> -->
+	<script src="../SiteAssets/components/form.vue.js"></script>
+	<!-- <script src="../SiteAssets/components/table.vue.js"></script> -->
 
 	<script>
 		Vue.use(VueRouter, {
@@ -112,6 +146,10 @@ PublicKeyToken=71e9bce111e9429c" %>
 		const routes = [{
 			path: '/',
 			component: home,
+			props: false
+		}, {
+			path: '/new-grant',
+			component: newGrant,
 			props: false
 		}, {
 			path: '/fiscal-year',
