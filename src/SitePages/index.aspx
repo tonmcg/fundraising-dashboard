@@ -67,11 +67,11 @@ PublicKeyToken=71e9bce111e9429c" %>
 			margin: 0 0 10px;
 		}
 
-		.v-btn--active {
+		/* .v-btn--active {
 			background: #0193d7 !important;
 			color: #fff !important;
 			border-radius: 0px !important;
-		}
+		} */
 
 		footer .v-card {
 			background: #0193d7 !important;
@@ -133,7 +133,7 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<script>
 		Vue.use(VueRouter, {
 			theme: {
-				primary: '#2196f3',
+				primary: '#7ECBEF',
 				secondary: '#03a9f4',
 				accent: '#8bc34a',
 				error: '#ff5722',
