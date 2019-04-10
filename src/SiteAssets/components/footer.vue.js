@@ -1,9 +1,8 @@
 Vue.component("footbar", {
-  template: `<div>
-  <v-footer app height="auto">
+  template: `<v-footer app height="auto">
     <v-layout justify-center row wrap>
       <v-flex>
-        <v-card flat tiel class="lighten-1 white--text text-xs-center">
+        <v-card flat tile class="primary white--text text-xs-center">
           <v-card-text>
             <v-btn v-for="icon in icons" :key="icon.name" class="mx-3 white--text" :href="icon.url" icon>
               <v-icon size="24px">{{ icon.name }}</v-icon>
@@ -17,8 +16,7 @@ Vue.component("footbar", {
         </v-card>
       </v-flex>
     </v-layout>
-  </v-footer>
-</div>`,
+  </v-footer>`,
   data() {
     return {
       icons: [{

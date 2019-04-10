@@ -20,36 +20,42 @@ Vue.component("grantForm", {
             <v-stepper-content step="1">
               <v-container fluid grid-list-xl>
                 <v-layout wrap align-center>
+
                   <v-flex xs12 sm12 md12>
                     <v-text-field v-model="fieldsMetadata.Title.model" :id="fieldsMetadata.Title.id"
                       :rules="fieldsMetadata.Title.rules" :label="fieldsMetadata.Title.label"
                       :type="fieldsMetadata.Title.type" :counter="fieldsMetadata.Title.counter"
                       :required="fieldsMetadata.Title.required" :readOnly="fieldsMetadata.Title.readOnly"
-                      :maxLength="fieldsMetadata.Title.maxLength" :hint="fieldsMetadata.Title.hint" persistent-hint clearable>
+                      :maxLength="fieldsMetadata.Title.maxLength" :hint="fieldsMetadata.Title.hint" persistent-hint
+                      clearable>
                     </v-text-field>
                   </v-flex>
-                  <v-flex xs6 sm6 md6>
+
+                  <v-flex xs12 sm6 md6>
                     <v-select v-model="fieldsMetadata.Program.model" :id="fieldsMetadata.Program.id"
                       :rules="fieldsMetadata.Program.rules" :label="fieldsMetadata.Program.label"
-                      :type="fieldsMetadata.Program.type" :required="fieldsMetadata.Program.required"
-                      :readonly="fieldsMetadata.Program.readOnly"
+                      :required="fieldsMetadata.Program.required" :readonly="fieldsMetadata.Program.readOnly"
                       :items="fieldsMetadata.Program.lookupRelationships.values"
-                      :item-text="fieldsMetadata.Program.lookupRelationships.key" 
-                      item-value="Id" 
-                      :hint="fieldsMetadata.Title.hint" 
-                      persistent-hint outline>
-                      <v-tooltip slot="prepend" bottom>
-                        <v-icon light medium slot="activator">info</v-icon>
-                        <span class="title">{{ fieldsMetadata.Program.description }}</span>
-                      </v-tooltip>
+                      :item-text="fieldsMetadata.Program.lookupRelationships.key" item-value="Id"
+                      :hint="fieldsMetadata.Program.hint" persistent-hint outline>
                     </v-select>
                   </v-flex>
-                  <v-flex xs6 sm6 md6>
+
+                  <v-flex xs12 sm6 md6>
+                    <v-select v-model="fieldsMetadata.FieldSite.model" :id="fieldsMetadata.FieldSite.id"
+                      :rules="fieldsMetadata.FieldSite.rules" :label="fieldsMetadata.FieldSite.label"
+                      :required="fieldsMetadata.FieldSite.required" :readonly="fieldsMetadata.FieldSite.readOnly"
+                      :items="fieldsMetadata.FieldSite.lookupRelationships.values"
+                      :item-text="fieldsMetadata.FieldSite.lookupRelationships.key" item-value="Id"
+                      :hint="fieldsMetadata.FieldSite.hint" persistent-hint outline>
+                    </v-select>
+                  </v-flex>
+
+                  <v-flex xs12 sm12 md12>
                     <span class="v-label theme--light">{{ fieldsMetadata.Duration.label }} </span>
                     <span class="display-1 v-label theme--light" v-text="fieldsMetadata.Duration.model"></span>
                     <span class="subheading v-label theme--light"
                       v-text="fieldsMetadata.Duration.model == 1 ? ' Year' : ' Years'"></span>
-
                     <v-slider v-model="fieldsMetadata.Duration.model" :rules="fieldsMetadata.Duration.rules"
                       :id="fieldsMetadata.Duration.id" :required="fieldsMetadata.Duration.required"
                       :min="fieldsMetadata.Duration.numericalSchema.minValue"
@@ -61,31 +67,14 @@ Vue.component("grantForm", {
                   </v-flex>
 
                   <v-flex xs12 sm12 md12>
-                    <template>
-                      <v-tooltip slot="prepend" bottom>
-                        <v-icon light medium slot="activator">info</v-icon>
-                        <span class="title">{{ fieldsMetadata.FundingStatus.description }}</span>
-                      </v-tooltip>
-                    <span class="v-label theme--light">{{ fieldsMetadata.FundingStatus.label }} 
-                      </span>
-                    </template>
-                    <v-item-group 
-                        v-model="fieldsMetadata.FundingStatus.model"
-                      >
-                      <v-container grid-list-md>
-                        <v-layout wrap>
-                          <v-flex xs12 sm12 md12>
-                          <v-item v-for="(choice,index) in fieldsMetadata.FundingStatus.choices" :key="choice">
-                              <v-btn slot-scope="{ active, toggle }" large class="white--text"
-                                :color="fieldsMetadata.FundingStatus.model == index ? filteredColors : 'primary'"
-                                :outline="fieldsMetadata.FundingStatus.model !== index" :value="index" @click="toggle">
-                                {{ choice }}</v-btn>
-                            </v-item>
-                          </v-flex>
-                        </v-layout>
-                      </v-container>
-                    </v-item-group>
+                    <v-textarea v-model="fieldsMetadata.Notes.model" :id="fieldsMetadata.Notes.id"
+                      :rules="fieldsMetadata.Notes.rules" :label="fieldsMetadata.Notes.label"
+                      :type="fieldsMetadata.Notes.type" :counter="fieldsMetadata.Notes.counter"
+                      :required="fieldsMetadata.Notes.required" :readOnly="fieldsMetadata.Notes.readOnly"
+                      :hint="fieldsMetadata.Notes.hint" persistent-hint clearable outline auto-grow>
+                    </v-textarea>
                   </v-flex>
+
                 </v-layout>
               </v-container>
               <v-btn color="primary" @click.native="step='2'">Continue</v-btn>
@@ -93,6 +82,81 @@ Vue.component("grantForm", {
             <v-stepper-content step="2">
               <v-container fluid grid-list-xl>
                 <v-layout wrap align-center>
+
+                  <v-flex xs12 sm12 md12>
+                    <v-radio-group 
+                      v-model="fieldsMetadata.FundingStatus.model"
+                      :label="fieldsMetadata.FundingStatus.label"
+                      :hint="fieldsMetadata.FundingStatus.description"
+                      persistent-hint
+                      row
+                    >
+                      <v-radio
+                        v-for="(choice,index) in fieldsMetadata.FundingStatus.choices" :key="choice"
+                        :label="choice" 
+                        :value="index"
+                        :color="fieldsMetadata.FundingStatus.model == index ? filteredColors : 'primary'"
+                      >
+                      </v-radio>
+                    </v-radio-group>
+
+                    <!-- <v-item-group v-model="fieldsMetadata.FundingStatus.model">
+                      <v-item v-for="(choice,index) in fieldsMetadata.FundingStatus.choices" :key="choice">
+                        <v-btn 
+                          slot-scope="{ active, toggle }" 
+                          large
+                          tile
+                          flat 
+                          class="white--text"
+                          :color="fieldsMetadata.FundingStatus.model == index ? filteredColors : 'primary'"
+                          :outline="fieldsMetadata.FundingStatus.model !== index" 
+                          :value="index" 
+                          @click="toggle"
+                        >
+                          {{ choice }}</v-btn>
+                      </v-item>
+                    </v-item-group> -->
+
+                  </v-flex>
+
+                  <v-flex xs12 sm6 md6>
+                    <v-select v-model="fieldsMetadata.DonorType.model" :id="fieldsMetadata.DonorType.id"
+                      :rules="fieldsMetadata.DonorType.rules" :label="fieldsMetadata.DonorType.label"
+                      :required="fieldsMetadata.DonorType.required" :readonly="fieldsMetadata.DonorType.readOnly"
+                      :items="fieldsMetadata.DonorType.lookupRelationships.values"
+                      item-text="DonorType.Title" item-value="DonorType.Id"
+                      :hint="fieldsMetadata.DonorType.hint" persistent-hint outline>
+                    </v-select>
+                  </v-flex>
+
+                  <v-flex xs12 sm6 md6>
+                    <v-select v-model="fieldsMetadata.Donor.model" :id="fieldsMetadata.Donor.id"
+                      :rules="fieldsMetadata.Donor.rules" :label="fieldsMetadata.Donor.label"
+                      :required="fieldsMetadata.Donor.required" :readonly="fieldsMetadata.Donor.readOnly"
+                      :items="filteredDonors"
+                      item-text="Title" item-value="Id"
+                      :hint="fieldsMetadata.Donor.hint" persistent-hint outline>
+                    </v-select>
+                  </v-flex>
+
+                  <v-flex xs6 sm6 md6>
+                    <v-text-field 
+                      v-model="fieldsMetadata.ProgramCommitment.model" 
+                      :id="fieldsMetadata.ProgramCommitment.id"
+                      :rules="fieldsMetadata.ProgramCommitment.rules" 
+                      :label="fieldsMetadata.ProgramCommitment.label"
+                      :type="fieldsMetadata.ProgramCommitment.type" 
+                      :required="fieldsMetadata.ProgramCommitment.required" 
+                      :readOnly="fieldsMetadata.ProgramCommitment.readOnly"
+                      :hint="fieldsMetadata.ProgramCommitment.hint" 
+                      @keyup="formatCurrency"
+                      style="text-align:right;"
+                      class="currency"
+                      persistent-hint
+                      clearable>
+                    </v-text-field>
+                  </v-flex>
+
                 </v-layout>
               </v-container>
               <v-btn flat @click.native="step = 1">Previous</v-btn>
@@ -124,7 +188,7 @@ Vue.component("grantForm", {
     pageName: String
   },
 
-  data: function () {
+  data: function (vm) {
     return {
       step: 1,
       valid: false,
@@ -163,7 +227,7 @@ Vue.component("grantForm", {
             values: [],
             key: null
           },
-          description: null
+          hint: null
         },
         FieldSite: {
           model: null,
@@ -173,80 +237,58 @@ Vue.component("grantForm", {
           type: null,
           required: null,
           readOnly: null,
+          choices: [],
+          colors: [],
+          min: null,
+          max: null,
           lookupRelationships: {
             values: [],
             key: null
           },
-          description: null
+          hint: null
         },
         DonorType: {
           model: null,
           id: null,
           rules: [],
-          description: null,
           label: null,
           type: null,
-          counter: null,
           required: null,
           readOnly: null,
-          sortable: null,
-          hint: null,
-          numericalSchema: {
-            minValue: null,
-            maxValue: null,
-            decPlaces: null,
-            isPercent: null
-          },
           lookupRelationships: {
             key: null,
+            values: [],
             sourceList: null
-          }
+          },
+          hint: null,
+          description: null
         },
         Donor: {
           model: null,
           id: null,
           rules: [],
-          description: null,
           label: null,
           type: null,
-          counter: null,
           required: null,
           readOnly: null,
-          sortable: null,
-          hint: null,
-          numericalSchema: {
-            minValue: null,
-            maxValue: null,
-            decPlaces: null,
-            isPercent: null
-          },
           lookupRelationships: {
             key: null,
             sourceList: null
-          }
+          },
+          hint: null,
+          description: null
         },
         Notes: {
           model: null,
           id: null,
           rules: [],
-          description: null,
           label: null,
           type: null,
           counter: null,
           required: null,
           readOnly: null,
-          sortable: null,
-          hint: null,
-          numericalSchema: {
-            minValue: null,
-            maxValue: null,
-            decPlaces: null,
-            isPercent: null
-          },
-          lookupRelationships: {
-            key: null,
-            sourceList: null
-          }
+          maxLength: null,
+          hint: null
         },
         FiscalYear: {
           model: null,
@@ -315,6 +357,8 @@ Vue.component("grantForm", {
           required: null,
           readOnly: null,
           description: null,
+          hint: null,
+          isCurrency: null,
           currencySchema: {
             minValue: null,
             decPlaces: null
@@ -350,12 +394,6 @@ Vue.component("grantForm", {
         }
       },
       listFields: [],
-      programs: [],
-      donorTypes: [],
-      donors: [],
-      fieldSites: [],
-      fiscalYears: [],
-      fundingStatuses: [],
       webAbsoluteUrl: _spPageContextInfo.webAbsoluteUrl
     };
   },
@@ -365,6 +403,25 @@ Vue.component("grantForm", {
   },
 
   computed: {
+
+    // format a numeric input to the local currency
+
+    // return the subset of donors who match the selected donor type
+    filteredDonors: function () {
+
+      // get selected donor type id
+      // filter donors by the donor type id
+      // return filtered set of donors data
+      // reset donors model
+      let donorTypeId = this.fieldsMetadata.DonorType.model;
+      let donors = donorTypeId ? this.fieldsMetadata.DonorType.lookupRelationships.values.filter(d => {
+        return d.DonorType.Id == donorTypeId;
+      }) : [];
+
+      this.fieldsMetadata.Donor.model = null;
+
+      return donors;
+    },
 
     // set the color of the silder based on the current selection
     filteredColors: function () {
@@ -378,11 +435,11 @@ Vue.component("grantForm", {
       let label = choicesLength ? this.fieldsMetadata.FundingStatus.choices[model] : null;
       let color = colorsLength ? this.fieldsMetadata.FundingStatus.colors[model] : null;
 
-      console.table({
-        value: model,
-        color: color,
-        label: label
-      });
+      // console.table({
+      //   value: model,
+      //   color: color,
+      //   label: label
+      // });
 
       return color;
     },
@@ -390,19 +447,6 @@ Vue.component("grantForm", {
   },
 
   watch: {
-    projectCost: function (val) {
-      this.projectCostFormatted = this.formatProjectCost(val);
-    },
-
-    targetDate: function (val) {
-      this.targetDateFormatted = this.formatDate(val);
-    },
-    startDate: function (val) {
-      this.startDateFormatted = this.formatDate(val);
-    },
-    endDate: function (val) {
-      this.endDateFormatted = this.formatDate(val);
-    },
 
     editedItem: function () {
       this.$refs.form.reset();
@@ -453,12 +497,12 @@ Vue.component("grantForm", {
       let dataType = null;
 
       switch (fieldType) {
-        case "Currency":
         case "Lookup":
         case "Counter":
         case "User":
           dataType = "number";
           break;
+        case "Currency":
         case "Text":
         case "Note":
           dataType = "text";
@@ -633,7 +677,7 @@ Vue.component("grantForm", {
               model: targetObj.model,
               choices: targetObj.choices
             };
-          } else if (f.TypeAsString == "Text") {
+          } else if (f.TypeAsString == "Text" || f.TypeAsString == "Note") {
             targetObj.model = f.DefaultValue;
             targetObj.maxLength = that.getMaxLength(f.MaxLength);
             targetObj.counter = that.getMaxLength(f.MaxLength);
@@ -658,6 +702,8 @@ Vue.component("grantForm", {
           } else if (f.TypeAsString == "Currency") {
             let currencySchema = that.getCurrencySchema(f.SchemaXml);
             targetObj.model = f.DefaultValue;
+            targetObj.hint = f.Description;
+            targetObj.isCurrency = true;
             targetObj.currencySchema.minValue = currencySchema.minValue;
             targetObj.currencySchema.decPlaces = currencySchema.decPlaces;
             consoleTable = {
@@ -667,9 +713,11 @@ Vue.component("grantForm", {
           } else if (f.TypeAsString == "Lookup") {
             // these defaults have already been set elsewehere
             // carry them over here
+            targetObj.hint = f.Description;
             targetObj.lookupRelationships.key = f.LookupField;
             targetObj.lookupRelationships.sourceList = f.LookupList;
             consoleTable = {
+              hint: targetObj.hint,
               lookupRelationships: targetObj.lookupRelationships
             };
           }
@@ -690,6 +738,18 @@ Vue.component("grantForm", {
         }
       }).then(response => {
         this.fieldsMetadata.Program.lookupRelationships.values = response.data.value;
+      })
+    },
+
+    getFieldSites: function () {
+      let select = "Id,Title";
+      let endpoint = this.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Field Sites')/items?$select=" + select;
+      return axios.get(endpoint, {
+        headers: {
+          Accept: "application/json;odata=nometadata"
+        }
+      }).then(response => {
+        this.fieldsMetadata.FieldSite.lookupRelationships.values = response.data.value;
       })
     },
 
@@ -716,15 +776,17 @@ Vue.component("grantForm", {
       })
     },
 
-    getFieldSites: function () {
-      let select = "Id,Title";
-      let endpoint = this.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Field Sites')/items?$select=" + select;
+    getDonors: function () {
+      let select = "Id,Title,DonorType/Title,DonorType/Id";
+      let expand = "DonorType";
+      let top = '500';
+      let endpoint = this.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Donors')/items?$select=" + select + "&$expand=" + expand + "&$top=" + top;
       return axios.get(endpoint, {
         headers: {
           Accept: "application/json;odata=nometadata"
         }
       }).then(response => {
-        this.fieldSites = response.data.value;
+        this.fieldsMetadata.DonorType.lookupRelationships.values = response.data.value;
       })
     },
 
@@ -735,7 +797,8 @@ Vue.component("grantForm", {
           this.getFieldMetadata(),
           this.getPrograms(),
           this.getFieldSites(),
-          this.getFundingStatuses()
+          this.getFundingStatuses(),
+          this.getDonors()
         ]);
       } catch (error) {
         this.errormsg = error.message;
@@ -744,30 +807,23 @@ Vue.component("grantForm", {
       }
     },
 
-    formatProjectCost: function (val) {
-      let value =
-        val == null ?
-        null :
-        parseInt(val).toLocaleString(undefined, {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0
-        });
+    formatNumeric: function (text) {
+      let value = text == null ? null : Number(text.replace(/[^0-9.-]+/g, ""));
+
       return value;
     },
 
-    formatDate: function (date) {
-      if (!date) return null;
+    formatCurrency: function () {
 
-      const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
-    },
+      let val = this.fieldsMetadata.ProgramCommitment.model;
 
-    parseDate(date) {
-      if (!date) return null;
+      let value = !val ? null : parseInt(this.formatNumeric(val)).toLocaleString(undefined, {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: this.fieldsMetadata.ProgramCommitment.currencySchema.decPlaces
+      });
 
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      this.fieldsMetadata.ProgramCommitment.model = value;
     },
 
     submit: function () {
@@ -789,8 +845,10 @@ Vue.component("grantForm", {
         // create SharePoint-accepted data structure
         this.$refs.form._data.inputs.forEach(function (d) {
           let internalName = d.$attrs.id;
-          let value = d.value !== undefined ? d.value : null;
           let dataType = d.type;
+          let isCurrency = Array.prototype.slice.call(d.$vnode.elm.classList).indexOf('currency') > -1;
+          let value = dataType == "text" && isCurrency ? that.formatNumeric(d.value) : d.value;
+
           data[internalName] = value;
         });
 
@@ -799,7 +857,7 @@ Vue.component("grantForm", {
         axios
           .post("https://jsonplaceholder.typicode.com/posts", data)
           .then(function (response) {
-            console.table(response);
+            console.table(response.data);
             that.submissionType = submissionType;
             that.valid = false;
             that.loading = false;

@@ -67,17 +67,17 @@ PublicKeyToken=71e9bce111e9429c" %>
 			margin: 0 0 10px;
 		}
 
-		/* .v-btn--active {
-			background: #0193d7 !important;
-			color: #fff !important;
-			border-radius: 0px !important;
-		} */
-
-		footer .v-card {
-			background: #0193d7 !important;
+		.v-btn--active {
+			background: #7ECBEF !important;
 			color: #fff !important;
 			border-radius: 0px !important;
 		}
+
+		/* footer .v-card {
+			background: #03a9f4 !important;
+			color: #fff !important;
+			border-radius: 0px !important;
+		} */
 	</style>
 </head>
 
@@ -131,17 +131,7 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<!-- <script src="../SiteAssets/components/table.vue.js"></script> -->
 
 	<script>
-		Vue.use(VueRouter, {
-			theme: {
-				primary: '#7ECBEF',
-				secondary: '#03a9f4',
-				accent: '#8bc34a',
-				error: '#ff5722',
-				warning: '#ff9800',
-				info: '#607d8b',
-				success: '#4caf50'
-			}
-		});
+		Vue.use(VueRouter);
 
 		const routes = [{
 			path: '/',
@@ -188,6 +178,15 @@ PublicKeyToken=71e9bce111e9429c" %>
 			created() {
 				window.addEventListener('resize', this.handleResize);
 				this.handleResize();
+			},
+			mounted: function () {
+				this.$vuetify.theme.primary = '#03a9f4',
+				this.$vuetify.theme.secondary = '#7ECBEF',
+				this.$vuetify.theme.accent = '#8bc34a',
+				this.$vuetify.theme.error = '#ff5722',
+				this.$vuetify.theme.warning = '#ff9800',
+				this.$vuetify.theme.info = '#607d8b',
+				this.$vuetify.theme.success = '#4caf50'
 			},
 			destroyed() {
 				window.removeEventListener('resize', this.handleResize);

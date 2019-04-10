@@ -1,10 +1,18 @@
 Vue.component("toolbar", {
   template: `<v-toolbar app color="grey lighten-5">
   <v-toolbar-items>
-    <v-btn flat href="https://www.conservation.org/Pages/default.aspx" target="_blank">
+    <v-btn flat tile href="https://www.conservation.org/Pages/default.aspx" target="_blank">
       <img width="128px" src="../images/ciLogo_Large.svg" alt="CI logo" />
     </v-btn>
-    <v-btn large flat style="font-size: 18px;" v-for="link in links" :key="link.name" :to="link.path">{{ link.name }}</v-btn>
+    <v-btn 
+      v-for="(link,i) in links"
+      :key="link.name" 
+      large 
+      tile
+      flat 
+      style="font-size: 18px;" 
+      :to="link.path"
+    >{{ link.name }}</v-btn>
   </v-toolbar-items>
 
   <v-spacer></v-spacer>
