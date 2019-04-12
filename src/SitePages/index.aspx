@@ -104,10 +104,10 @@ PublicKeyToken=71e9bce111e9429c" %>
 	================================================== -->
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/moment@2.20.1/moment.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.18/dist/vue.js"></script>
-	<script src="https://unpkg.com/http-vue-loader"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.js"></script>
+	<script src="https://unpkg.com/http-vue-loader"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
 
 	<!-- SharePoint-specific JavaScript
 	Doesn't look like we need this in SharePoint Online - T.M.

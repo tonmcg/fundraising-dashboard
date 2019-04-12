@@ -5,7 +5,7 @@ Vue.component("grantForm", {
       <h2>Enter a New Commitment</h2>
     </v-card-title>
     <v-card-text>
-      <v-snackbar v-model="snackbar" absolute color="primary">
+      <v-snackbar v-model="snackbar" absolute color="success">
         <span>The Commitment Has Been {{ submissionType }}</span>
         <v-btn flat color="white" @click="snackbar = false">Close</v-btn>
       </v-snackbar>
@@ -22,56 +22,103 @@ Vue.component("grantForm", {
                 <v-layout wrap align-center>
 
                   <v-flex xs12 sm12 md12>
-                    <v-text-field v-model="fieldsMetadata.Title.model" :id="fieldsMetadata.Title.id"
-                      :rules="fieldsMetadata.Title.rules" :label="fieldsMetadata.Title.label"
-                      :type="fieldsMetadata.Title.type" :counter="fieldsMetadata.Title.counter"
-                      :required="fieldsMetadata.Title.required" :readOnly="fieldsMetadata.Title.readOnly"
-                      :maxLength="fieldsMetadata.Title.maxLength" :hint="fieldsMetadata.Title.hint" persistent-hint
-                      clearable>
+                    <v-text-field 
+                      v-model="fieldProperties.Title['v-model']"
+                      :key="fieldProperties.Title.internalName"
+                      :id="fieldProperties.Title.id"
+                      :rules="fieldProperties.Title.rules" 
+                      :label="fieldProperties.Title.label"
+                      :type="fieldProperties.Title.type" 
+                      :counter="fieldProperties.Title.counter"
+                      :required="fieldProperties.Title.required" 
+                      :readOnly="readOnly"
+                      :maxLength="fieldProperties.Title.maxLength" 
+                      :hint="fieldProperties.Title.hint" 
+                      persistent-hint
+                      :clearable="clearable">
                     </v-text-field>
                   </v-flex>
 
                   <v-flex xs12 sm6 md6>
-                    <v-select v-model="fieldsMetadata.Program.model" :id="fieldsMetadata.Program.id"
-                      :rules="fieldsMetadata.Program.rules" :label="fieldsMetadata.Program.label"
-                      :required="fieldsMetadata.Program.required" :readonly="fieldsMetadata.Program.readOnly"
-                      :items="fieldsMetadata.Program.lookupRelationships.values"
-                      :item-text="fieldsMetadata.Program.lookupRelationships.key" item-value="Id"
-                      :hint="fieldsMetadata.Program.hint" persistent-hint outline>
+                    <v-select 
+                      v-model="fieldProperties.Program['v-model']" 
+                      :key="fieldProperties.Program.internalName"
+                      :id="fieldProperties.Program.id"
+                      :rules="fieldProperties.Program.rules" 
+                      :label="fieldProperties.Program.label"
+                      :required="fieldProperties.Program.required" 
+                      :readonly="readOnly"
+                      :items="fieldProperties.Program.items"
+                      :item-text="fieldProperties.Program['item-text']" 
+                      :item-value="fieldProperties.Program['item-value']"
+                      :hint="fieldProperties.Program.hint" 
+                      persistent-hint 
+                      outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 sm6 md6>
-                    <v-select v-model="fieldsMetadata.FieldSite.model" :id="fieldsMetadata.FieldSite.id"
-                      :rules="fieldsMetadata.FieldSite.rules" :label="fieldsMetadata.FieldSite.label"
-                      :required="fieldsMetadata.FieldSite.required" :readonly="fieldsMetadata.FieldSite.readOnly"
-                      :items="fieldsMetadata.FieldSite.lookupRelationships.values"
-                      :item-text="fieldsMetadata.FieldSite.lookupRelationships.key" item-value="Id"
-                      :hint="fieldsMetadata.FieldSite.hint" persistent-hint outline>
+                    <v-select 
+                      v-model="fieldProperties.FieldSite['v-model']" 
+                      :key="fieldProperties.FieldSite.internalName"
+                      :id="fieldProperties.FieldSite.id"
+                      :rules="fieldProperties.FieldSite.rules" 
+                      :label="fieldProperties.FieldSite.label"
+                      :required="fieldProperties.FieldSite.required" 
+                      :readonly="readOnly"
+                      :items="fieldProperties.FieldSite.items"
+                      :item-text="fieldProperties.FieldSite['item-text']" 
+                      :item-value="fieldProperties.FieldSite['item-value']"
+                      :hint="fieldProperties.FieldSite.hint" 
+                      persistent-hint 
+                      outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 sm12 md12>
-                    <span class="v-label theme--light">{{ fieldsMetadata.Duration.label }} </span>
-                    <span class="display-1 v-label theme--light" v-text="fieldsMetadata.Duration.model"></span>
-                    <span class="subheading v-label theme--light"
-                      v-text="fieldsMetadata.Duration.model == 1 ? ' Year' : ' Years'"></span>
-                    <v-slider v-model="fieldsMetadata.Duration.model" :rules="fieldsMetadata.Duration.rules"
-                      :id="fieldsMetadata.Duration.id" :required="fieldsMetadata.Duration.required"
-                      :min="fieldsMetadata.Duration.numericalSchema.minValue"
-                      :max="fieldsMetadata.Duration.numericalSchema.maxValue"
-                      :hint="fieldsMetadata.Duration.description" persistent-hint always-dirty step="1" ticks>
-                      <v-icon slot="prepend" @click="moveLeft">fas fa-minus</v-icon>
-                      <v-icon slot="append" @click="moveRight">fas fa-plus</v-icon>
+                    <span class="v-label theme--light">{{ fieldProperties.Duration.label }} </span>
+                    <span 
+                      class="display-1 v-label primary--text"
+                      v-text="fieldProperties.Duration['v-model']"
+                    ></span>
+                    <span 
+                      class="subheading v-label theme--light"
+                      v-text="fieldProperties.Duration['v-model'] == 1 ? ' Year' : ' Years'"
+                    ></span>
+                    <v-slider 
+                      v-model="fieldProperties.Duration['v-model']" 
+                      :key="fieldProperties.Duration.internalName"
+                      :id="fieldProperties.Duration.id" 
+                      :rules="fieldProperties.Duration.rules"
+                      :readonly="readOnly"
+                      :required="fieldProperties.Duration.required"
+                      :min="fieldProperties.Duration.min"
+                      :max="fieldProperties.Duration.max"
+                      :hint="fieldProperties.Duration.description" 
+                      persistent-hint 
+                      always-dirty 
+                      step="1" 
+                      ticks>
+                      <v-icon :disabled="disabled" slot="prepend" @click="moveLeft($event)">fas fa-minus</v-icon>
+                      <v-icon :disabled="disabled" slot="append" @click="moveRight($event)">fas fa-plus</v-icon>
                     </v-slider>
                   </v-flex>
 
                   <v-flex xs12 sm12 md12>
-                    <v-textarea v-model="fieldsMetadata.Notes.model" :id="fieldsMetadata.Notes.id"
-                      :rules="fieldsMetadata.Notes.rules" :label="fieldsMetadata.Notes.label"
-                      :type="fieldsMetadata.Notes.type" :counter="fieldsMetadata.Notes.counter"
-                      :required="fieldsMetadata.Notes.required" :readOnly="fieldsMetadata.Notes.readOnly"
-                      :hint="fieldsMetadata.Notes.hint" persistent-hint clearable outline auto-grow>
+                    <v-textarea 
+                      v-model="fieldProperties.Notes['v-model']" 
+                      :key="fieldProperties.Notes.internalName"
+                      :id="fieldProperties.Notes.id"
+                      :rules="fieldProperties.Notes.rules" 
+                      :readonly="readOnly"
+                      :label="fieldProperties.Notes.label"
+                      :type="fieldProperties.Notes.type" 
+                      :required="fieldProperties.Notes.required" 
+                      :hint="fieldProperties.Notes.hint" 
+                      persistent-hint 
+                      :clearable="clearable" 
+                      outline 
+                      auto-grow>
                     </v-textarea>
                   </v-flex>
 
@@ -83,81 +130,153 @@ Vue.component("grantForm", {
               <v-container fluid grid-list-xl>
                 <v-layout wrap align-center>
 
-                  <v-flex xs12 sm12 md12>
+                  <v-flex xs12 sm9 md9 class="text-xs-center">
+
                     <v-radio-group 
-                      v-model="fieldsMetadata.FundingStatus.model"
-                      :label="fieldsMetadata.FundingStatus.label"
-                      :hint="fieldsMetadata.FundingStatus.description"
+                      v-model="fieldProperties.FundingStatus['v-model']"
+                      :key="fieldProperties.FundingStatus.internalName"
+                      :id="fieldProperties.FundingStatus.id"
+                      :rules="fieldProperties.FundingStatus.rules" 
+                      :readonly="readOnly"
+                      :label="fieldProperties.FundingStatus.label"
+                      :hint="fieldProperties.FundingStatus.description"
                       persistent-hint
-                      row
+                    row
                     >
                       <v-radio
-                        v-for="(choice,index) in fieldsMetadata.FundingStatus.choices" :key="choice"
-                        :label="choice" 
-                        :value="index"
-                        :color="fieldsMetadata.FundingStatus.model == index ? filteredColors : 'primary'"
+                        v-for="item in fieldProperties.FundingStatus.items" 
+                        :key="item.Id"
+                        :label="item.Title" 
+                        :value="item.Id"
+                        :color="item.Color.Color"
                       >
                       </v-radio>
                     </v-radio-group>
 
-                    <!-- <v-item-group v-model="fieldsMetadata.FundingStatus.model">
-                      <v-item v-for="(choice,index) in fieldsMetadata.FundingStatus.choices" :key="choice">
-                        <v-btn 
-                          slot-scope="{ active, toggle }" 
-                          large
-                          tile
-                          flat 
-                          class="white--text"
-                          :color="fieldsMetadata.FundingStatus.model == index ? filteredColors : 'primary'"
-                          :outline="fieldsMetadata.FundingStatus.model !== index" 
-                          :value="index" 
-                          @click="toggle"
+                    <!-- <v-item-group 
+                      v-model="fieldProperties.FundingStatus['v-model']"
+                      :key="fieldProperties.FundingStatus.internalName"
+                      :id="fieldProperties.FundingStatus.id"
+                      :rules="fieldProperties.FundingStatus.rules" 
+                      :readonly="readOnly"
+                      :label="fieldProperties.FundingStatus.label"
+                      :hint="fieldProperties.FundingStatus.description"
+                      persistent-hint
+                    >
+                      <span class="v-label theme--light">{{ fieldProperties.FundingStatus.label }}</span>
+                        <v-item 
+                          v-for="(item,index) in fieldProperties.FundingStatus.items" 
+                          :key="item.Id"
                         >
-                          {{ choice }}</v-btn>
-                      </v-item>
-                    </v-item-group> -->
+                          <v-btn 
+                            slot-scope="{ active, toggle }" 
+                            large
+                            :class="active ? 'white--text' : ''"
+                            :color="item.Color.Color"
+                            :outline="active ? false : true" 
+                            :value="item.Id"
+                            @click="toggle"
+                          >
+                            {{ item.Title }}</v-btn>
+                        </v-item>
+                      </v-item-group>
+                    <span class="v-messages theme--light">{{ fieldProperties.FundingStatus.hint }}</span> -->
 
                   </v-flex>
 
-                  <v-flex xs12 sm6 md6>
-                    <v-select v-model="fieldsMetadata.DonorType.model" :id="fieldsMetadata.DonorType.id"
-                      :rules="fieldsMetadata.DonorType.rules" :label="fieldsMetadata.DonorType.label"
-                      :required="fieldsMetadata.DonorType.required" :readonly="fieldsMetadata.DonorType.readOnly"
-                      :items="fieldsMetadata.DonorType.lookupRelationships.values"
-                      item-text="DonorType.Title" item-value="DonorType.Id"
-                      :hint="fieldsMetadata.DonorType.hint" persistent-hint outline>
+                  <v-flex xs12 sm3 md3>
+                    <v-select 
+                      v-model="fieldProperties.FiscalYear['v-model']" 
+                      :key="fieldProperties.FiscalYear.internalName"
+                      :id="fieldProperties.FiscalYear.id"
+                      :rules="fieldProperties.FiscalYear.rules" 
+                      :label="fieldProperties.FiscalYear.label"
+                      :required="fieldProperties.FiscalYear.required" 
+                      :readonly="readOnly"
+                      :items="fieldProperties.FiscalYear.items"
+                      item-text="Title" 
+                      item-value="Id"
+                      :hint="fieldProperties.FiscalYear.hint" 
+                      persistent-hint 
+                      outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 sm6 md6>
-                    <v-select v-model="fieldsMetadata.Donor.model" :id="fieldsMetadata.Donor.id"
-                      :rules="fieldsMetadata.Donor.rules" :label="fieldsMetadata.Donor.label"
-                      :required="fieldsMetadata.Donor.required" :readonly="fieldsMetadata.Donor.readOnly"
+                    <v-select 
+                      v-model="fieldProperties.DonorType['v-model']" 
+                      :key="fieldProperties.DonorType.internalName"
+                      :id="fieldProperties.DonorType.id"
+                      :rules="fieldProperties.DonorType.rules" 
+                      :label="fieldProperties.DonorType.label"
+                      :required="fieldProperties.DonorType.required" 
+                      :readonly="readOnly"
+                      :items="fieldProperties.DonorType.items"
+                      item-text="DonorType.Title" 
+                      item-value="DonorType.Id"
+                      :hint="fieldProperties.DonorType.hint" 
+                      persistent-hint 
+                      outline>
+                    </v-select>
+                  </v-flex>
+
+                  <v-flex xs12 sm6 md6>
+                    <v-select 
+                      v-model="fieldProperties.Donor['v-model']" 
+                      :key="fieldProperties.Donor.internalName"
+                      :id="fieldProperties.Donor.id"
+                      :rules="fieldProperties.Donor.rules" 
+                      :label="fieldProperties.Donor.label"
+                      :required="fieldProperties.Donor.required" 
+                      :readonly="readOnly"
                       :items="filteredDonors"
-                      item-text="Title" item-value="Id"
-                      :hint="fieldsMetadata.Donor.hint" persistent-hint outline>
+                      :item-text="fieldProperties.Donor['item-text']"
+                      :item-value="fieldProperties.Donor['item-value']"
+                      :hint="fieldProperties.Donor.hint" 
+                      persistent-hint 
+                      outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs6 sm6 md6>
                     <v-text-field 
-                      v-model="fieldsMetadata.ProgramCommitment.model" 
-                      :id="fieldsMetadata.ProgramCommitment.id"
-                      :rules="fieldsMetadata.ProgramCommitment.rules" 
-                      :label="fieldsMetadata.ProgramCommitment.label"
-                      :type="fieldsMetadata.ProgramCommitment.type" 
-                      :required="fieldsMetadata.ProgramCommitment.required" 
-                      :readOnly="fieldsMetadata.ProgramCommitment.readOnly"
-                      :hint="fieldsMetadata.ProgramCommitment.hint" 
-                      @keyup="formatCurrency"
-                      style="text-align:right;"
-                      class="currency"
+                      v-model="fieldProperties.ProgramCommitment['v-model']" 
+                      :key="fieldProperties.ProgramCommitment.internalName"
+                      :id="fieldProperties.ProgramCommitment.id"
+                      :rules="fieldProperties.ProgramCommitment.rules" 
+                      :label="fieldProperties.ProgramCommitment.label"
+                      :type="fieldProperties.ProgramCommitment.type" 
+                      :required="fieldProperties.ProgramCommitment.required" 
+                      :readonly="readOnly"
+                      :hint="fieldProperties.ProgramCommitment.hint"
+                      :placeholder="fieldProperties.ProgramCommitment.placeholder"
+                      @keyup="formatCurrency($event)"
+                      class="align-end"
                       persistent-hint
-                      clearable>
+                      :clearable="clearable">
                     </v-text-field>
                   </v-flex>
 
-                </v-layout>
+                  <v-flex xs6 sm6 md6>
+                    <v-text-field 
+                      v-model="fieldProperties.FieldSiteCommitment['v-model']" 
+                      :key="fieldProperties.FieldSiteCommitment.internalName"
+                      :id="fieldProperties.FieldSiteCommitment.id"
+                      :rules="fieldProperties.FieldSiteCommitment.rules" 
+                      :label="fieldProperties.FieldSiteCommitment.label"
+                      :type="fieldProperties.FieldSiteCommitment.type" 
+                      :required="fieldProperties.FieldSiteCommitment.required" 
+                      :readonly="readOnly"
+                      :hint="fieldProperties.FieldSiteCommitment.hint"
+                      :placeholder="fieldProperties.FieldSiteCommitment.placeholder"
+                      @keyup="formatCurrency($event)"
+                      class="align-end"
+                      persistent-hint
+                      :clearable="clearable">
+                    </v-text-field>
+                  </v-flex>
+
+                  </v-layout>
               </v-container>
               <v-btn flat @click.native="step = 1">Previous</v-btn>
               <v-btn :disabled="!valid" :loading="loading" outline color="primary" @click.prevent="save">
@@ -191,210 +310,168 @@ Vue.component("grantForm", {
   data: function (vm) {
     return {
       step: 1,
-      valid: false,
+      disabled: false,
+      valid: true,
       loading: false,
       dialog: true,
       readOnly: false,
       clearable: true,
       snackbar: false,
       submissionType: null,
-      fieldsMetadata: {
+      fieldProperties: {
         Title: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
           type: null,
           counter: null,
           required: null,
-          readOnly: null,
           maxLength: null,
           hint: null
         },
         Program: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
-          type: null,
           required: null,
-          readOnly: null,
-          choices: [],
-          colors: [],
-          min: null,
-          max: null,
-          lookupRelationships: {
-            values: [],
-            key: null
-          },
+          items: [],
+          "item-text": null,
+          "item-value": 'Id',
           hint: null
         },
         FieldSite: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
-          type: null,
           required: null,
-          readOnly: null,
-          choices: [],
-          colors: [],
-          min: null,
-          max: null,
-          lookupRelationships: {
-            values: [],
-            key: null
-          },
+          items: [],
+          "item-text": null,
+          "item-value": 'Id',
           hint: null
         },
         DonorType: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
-          type: null,
           required: null,
-          readOnly: null,
-          lookupRelationships: {
-            key: null,
-            values: [],
-            sourceList: null
-          },
-          hint: null,
-          description: null
+          items: [],
+          "item-text": null,
+          "item-value": 'Id',
+          hint: null
         },
         Donor: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
-          type: null,
           required: null,
-          readOnly: null,
-          lookupRelationships: {
-            key: null,
-            sourceList: null
-          },
-          hint: null,
-          description: null
+          items: [],
+          "item-text": null,
+          "item-value": 'Id',
+          hint: null
         },
         Notes: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
           type: null,
-          counter: null,
           required: null,
-          readOnly: null,
-          maxLength: null,
           hint: null
         },
         FiscalYear: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
-          description: null,
           label: null,
-          type: null,
-          counter: null,
           required: null,
-          readOnly: null,
-          sortable: null,
-          hint: null,
-          numericalSchema: {
-            minValue: null,
-            maxValue: null,
-            decPlaces: null,
-            isPercent: null
-          },
-          lookupRelationships: {
-            key: null,
-            sourceList: null
-          }
+          items: [],
+          "item-text": null,
+          "item-value": 'Id',
+          hint: null
         },
         FundingStatus: {
-          model: 0,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
           type: null,
           required: null,
-          readOnly: null,
-          choices: [],
-          colors: [],
-          min: 1,
-          max: 1,
-          lookupRelationships: {
-            values: [],
-            key: null
-          },
-          description: null
+          items: [],
+          hint: null
         },
         Duration: {
-          model: 1,
+          "v-model": 1,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           description: null,
           label: null,
           type: null,
           required: null,
-          readOnly: null,
           hint: null,
-          numericalSchema: {
-            minValue: 1,
-            maxValue: 1,
-            decPlaces: null,
-            isPercent: null
-          }
+          min: null,
+          max: null,
+          Decimals: null,
+          Percentage: null
         },
         ProgramCommitment: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
           type: null,
           required: null,
-          readOnly: null,
-          description: null,
           hint: null,
-          isCurrency: null,
-          currencySchema: {
-            minValue: null,
-            decPlaces: null
-          }
+          placeholder: null,
+          min: null,
+          max: null,
+          Decimals: null,
+          Percentage: null
         },
         FieldSiteCommitment: {
-          model: null,
+          "v-model": null,
+          internalName: null,
+          typeAsString: null,
           id: null,
           rules: [],
           label: null,
           type: null,
           required: null,
-          readOnly: null,
-          description: null,
-          currencySchema: {
-            minValue: null,
-            decPlaces: null
-          }
-        },
-        TotalCommitment: {
-          model: null,
-          id: null,
-          rules: [],
-          label: null,
-          type: null,
-          required: null,
-          readOnly: null,
-          description: null,
-          currencySchema: {
-            minValue: null,
-            decPlaces: null
-          }
+          hint: null,
+          placeholder: null,
+          min: null,
+          max: null,
+          Decimals: null,
+          Percentage: null
         }
       },
       listFields: [],
-      webAbsoluteUrl: _spPageContextInfo.webAbsoluteUrl
+      webAbsoluteUrl: _spPageContextInfo.webAbsoluteUrl,
+      formDigestValue: _spPageContextInfo.formDigestValue
     };
   },
 
@@ -404,8 +481,6 @@ Vue.component("grantForm", {
 
   computed: {
 
-    // format a numeric input to the local currency
-
     // return the subset of donors who match the selected donor type
     filteredDonors: function () {
 
@@ -413,12 +488,12 @@ Vue.component("grantForm", {
       // filter donors by the donor type id
       // return filtered set of donors data
       // reset donors model
-      let donorTypeId = this.fieldsMetadata.DonorType.model;
-      let donors = donorTypeId ? this.fieldsMetadata.DonorType.lookupRelationships.values.filter(d => {
+      let donorTypeId = this.fieldProperties.DonorType['v-model'];
+      let donors = donorTypeId ? this.fieldProperties.DonorType.items.filter(d => {
         return d.DonorType.Id == donorTypeId;
       }) : [];
 
-      this.fieldsMetadata.Donor.model = null;
+      this.fieldProperties.Donor['v-model'] = null;
 
       return donors;
     },
@@ -429,11 +504,11 @@ Vue.component("grantForm", {
       // get the status based on the model value
       // get the color hex code based on the model value
 
-      let model = this.fieldsMetadata.FundingStatus.model;
-      let choicesLength = this.fieldsMetadata.FundingStatus.choices.length;
-      let colorsLength = this.fieldsMetadata.FundingStatus.colors.length;
-      let label = choicesLength ? this.fieldsMetadata.FundingStatus.choices[model] : null;
-      let color = colorsLength ? this.fieldsMetadata.FundingStatus.colors[model] : null;
+      let model = this.fieldProperties.FundingStatus['v-model'];
+      let choicesLength = this.fieldProperties.FundingStatus.choices.length;
+      let colorsLength = this.fieldProperties.FundingStatus.colors.length;
+      let label = choicesLength ? this.fieldProperties.FundingStatus.choices[model] : null;
+      let color = colorsLength ? this.fieldProperties.FundingStatus.colors[model] : null;
 
       // console.table({
       //   value: model,
@@ -470,18 +545,16 @@ Vue.component("grantForm", {
   },
 
   methods: {
-    moveLeft: function () {
-      this.fieldsMetadata.Duration.model--;
+    moveLeft: function (e) {
 
-      // let model = this.fieldsMetadata.Duration.model;
-      // console.table({ model: model });
+      this.fieldProperties[e.target.__vue__.$parent.$vnode.data.key]['v-model']--;
+      // this.fieldProperties.Duration['v-model']--;
     },
 
-    moveRight: function () {
-      this.fieldsMetadata.Duration.model++;
+    moveRight: function (e) {
 
-      // let model = this.fieldsMetadata.Duration.model;
-      // console.table({ model: model });
+      this.fieldProperties[e.target.__vue__.$parent.$vnode.data.key]['v-model']++;
+      // this.fieldProperties.Duration['v-model']++;
     },
 
     // return json representation of the field xml schema
@@ -497,9 +570,11 @@ Vue.component("grantForm", {
       let dataType = null;
 
       switch (fieldType) {
+        case "Number":
         case "Lookup":
         case "Counter":
         case "User":
+        case "Choice":
           dataType = "number";
           break;
         case "Currency":
@@ -545,66 +620,69 @@ Vue.component("grantForm", {
       return maxLength;
     },
 
-    // return an array of field choices
-    getChoices: function (textXML) {
-      let choices;
-
-      let xmlDoc = this.parseXML(textXML);
-      let fieldSchema = xmlDoc.getElementsByTagName('CHOICES')[0];
-      let choicesColl = fieldSchema.children;
-      let htmlArr = Array.prototype.slice.call(choicesColl);
-
-      choices = htmlArr.map(c => {
-        return c.textContent;
-      });
-
-      return choices;
-    },
-
-    // return a object representing the field currency schema including
-    // mimimum value
-    // number of decimal places
-    // default value
-    getCurrencySchema: function (textXML) {
-      let minValue = 0;
-      let decPlaces = 0;
-
+    // return a object representing the field choice including
+    // control format
+    // boolean for fill-in choices
+    // array of choice values
+    getChoiceSchema: function (textXML) {
       let xmlDoc = this.parseXML(textXML);
       let fieldSchema = xmlDoc.getElementsByTagName('Field')[0];
+      let choiceSchema = xmlDoc.getElementsByTagName('CHOICES')[0];
 
-      minValue = parseInt(fieldSchema.getAttribute('Min'));
-      decPlaces = parseInt(fieldSchema.getAttribute('Decimals'));
+      let Format = fieldSchema.getAttribute('Format') ? fieldSchema.getAttribute('Format') : "Dropdown";
+      let FillInChoice = fieldSchema.getAttribute('FillInChoice') ? JSON.parse(fieldSchema.getAttribute('FillInChoice').toLowerCase()) : false;
+      let Choices = Array.prototype.slice.call(choiceSchema.children).map((c, i) => {
+        return {
+          "Id": i,
+          "Title": c.textContent
+        };
+      });
 
       return {
-        minValue: minValue,
-        decPlaces: decPlaces
+        Format: Format,
+        FillInChoice: FillInChoice,
+        Choices: Choices
       };
     },
 
-    // return a object representing the field numerical schema including
+    // return a object representing the field note including
+    // number of lines
+    // boolean for rich text field
+    // mode of rich text for field
+    getNoteSchema: function (textXML) {
+      let xmlDoc = this.parseXML(textXML);
+      let fieldSchema = xmlDoc.getElementsByTagName('Field')[0];
+
+      let NumLines = fieldSchema.getAttribute('NumLines') ? parseInt(fieldSchema.getAttribute('NumLines')) : 0;
+      let RichText = fieldSchema.getAttribute('RichText') ? JSON.parse(fieldSchema.getAttribute('RichText').toLowerCase()) : false;
+      let RichTextMode = fieldSchema.getAttribute('RichTextMode') ? fieldSchema.getAttribute('RichTextMode') : 'Compatible';
+
+      return {
+        NumLines: NumLines,
+        RichText: RichText,
+        RichTextMode: RichTextMode
+      };
+    },
+
+    // return a object representing the field numerical or currency schema including
     // mimimum value
     // maximum value
     // number of decimal places
     // boolean if field is in percentage format
     getNumericalSchema: function (textXML) {
-      let minValue = 0;
-      let maxValue = 0;
-      let decPlaces = 0;
-      let isPercent = false;
-
       let xmlDoc = this.parseXML(textXML);
       let fieldSchema = xmlDoc.getElementsByTagName('Field')[0];
 
-      minValue = parseInt(fieldSchema.getAttribute('Min'));
-      maxValue = parseInt(fieldSchema.getAttribute('Max'));
-      decPlaces = parseInt(fieldSchema.getAttribute('Decimals'));
-      isPercent = JSON.parse(fieldSchema.getAttribute('Percentage').toLowerCase());
+      let Min = fieldSchema.getAttribute('Min') ? parseInt(fieldSchema.getAttribute('Min')) : 0;
+      let Max = fieldSchema.getAttribute('Max') ? parseInt(fieldSchema.getAttribute('Max')) : Infinity;
+      let Decimals = fieldSchema.getAttribute('Decimals') ? parseInt(fieldSchema.getAttribute('Decimals')) : 0;
+      let Percentage = fieldSchema.getAttribute('Percentage') ? JSON.parse(fieldSchema.getAttribute('Percentage').toLowerCase()) : false;
 
       return {
-        minValue: minValue,
-        maxValue: maxValue,
-        decPlaces: decPlaces,
-        isPercent: isPercent
+        Min: Min,
+        Max: Max,
+        Decimals: Decimals,
+        Percentage: Percentage
       };
     },
 
@@ -630,95 +708,143 @@ Vue.component("grantForm", {
         let listFields = response.data.value;
         let that = this;
 
-        // TODO: programmatically get the lookup list id and title for each
-        // lookup field to feed into a getPrograms function (below)
         listFields.forEach(function (f) {
 
-          let internalName = f.InternalName;
+          // get SharePoint field metadata
+          // set field properties based on metadata
 
-          // console.log("Setting initial properites for the " + internalName + " field.");
-          let targetObj = that.fieldsMetadata[internalName];
+          // console.log("Getting metadata for the " + f.InternalName + " field.");
 
-          targetObj.id = that.getFieldId(f.InternalName, f.Title);
-          targetObj.label = f.Title;
-          targetObj.description = f.Description;
-          targetObj.required = f.Required;
-          targetObj.readOnly = f.ReadOnlyField;
-          targetObj.rules = f.Required ? [
-            value => (value == 0 || !!value) || "Please " + f.Description.charAt(0).toLowerCase() + f.Description.substring(1)
-          ] : [];
-          targetObj.type = that.defineDataType(f.TypeAsString);
-
-          let consoleTable = {
-            id: targetObj.id,
-            label: targetObj.label,
-            description: targetObj.description,
-            required: targetObj.required,
-            readOnly: targetObj.readOnly,
-            rules: targetObj.rules,
-            type: targetObj.type
+          // SharePoint field metadata
+          let metadata = {
+            InternalName: f.InternalName,
+            Title: f.Title,
+            TypeAsString: f.TypeAsString,
+            Required: f.Required,
+            Sortable: f.Sortable,
+            Description: f.Description,
+            DefaultValue: f.DefaultValue,
+            Filterable: f.Filterable,
+            ReadOnlyField: f.ReadOnlyField
           };
 
-          // console.table(consoleTable);
-          // console.log("Setting custom properites for the " + internalName + " field.");
+          // SharePoint field custom metadata
+          if (metadata.TypeAsString == "Choice") {
+            schemaXml = that.getChoiceSchema(f.SchemaXml);
+            metadata.Format = schemaXml.Format;
+            metadata.FillInChoice = schemaXml.FillInChoice;
+            metadata.Choices = schemaXml.Choices;
+            metadata.DefaultChoice = schemaXml.Choices.filter(d => d.Title == metadata.DefaultValue)[0].Id;
+          } else if (metadata.TypeAsString == "Text") {
+            metadata.MaxLength = f.MaxLength;
+          } else if (metadata.TypeAsString == "Note") {
+            schemaXml = that.getNoteSchema(f.SchemaXml);
+            metadata.NumLines = schemaXml.NumLines;
+            metadata.RichText = schemaXml.RichText;
+            metadata.RichTextMode = schemaXml.RichTextMode;
+          } else if (metadata.TypeAsString == "Lookup") {
+            metadata.LookupField = f.LookupField;
+            metadata.LookupList = f.LookupList;
+          } else if (metadata.TypeAsString == "Number" || metadata.TypeAsString == "Currency") {
+            metadata.DefaultValue = parseInt(metadata.DefaultValue);
+            schemaXml = that.getNumericalSchema(f.SchemaXml);
+            metadata.Min = schemaXml.Min;
+            metadata.Max = schemaXml.Max;
+            metadata.Decimals = schemaXml.Decimals;
+            metadata.Percentage = schemaXml.Percentage;
+          }
+          // console.table(metadata);
 
-          // these properties may not exist for certain fields:
-          // choices is relevant for choice fields
-          // MaxLength is relevant for text fields
-          // numericalSchema is relevant for numerical fields
-          // lookupRelationships is relevant for lookup (relationship) fields
-          // For any data type, the default value will change
-          if (f.TypeAsString == "Choice") {
-            let choices = that.getChoices(f.SchemaXml);
-            let defaultValue = choices.indexOf(f.DefaultValue);
-            targetObj.model = defaultValue;
-            targetObj.choices = choices;
+          // field properties based on metadata
+          // console.log("Setting initial properites for the " + metadata.InternalName + " field.");
+
+          let fieldProperty = that.fieldProperties[metadata.InternalName];
+
+          fieldProperty.internalName = metadata.InternalName;
+          fieldProperty.typeAsString = metadata.TypeAsString;
+          fieldProperty.id = that.getFieldId(metadata.InternalName, metadata.Title);
+          fieldProperty.label = metadata.Title;
+          fieldProperty.description = metadata.Description;
+          fieldProperty.required = metadata.Required;
+          fieldProperty.readOnly = metadata.ReadOnlyField;
+          fieldProperty.rules = metadata.Required ? [
+            value => (value == 0 || !!value) || "Please " + metadata.Description.charAt(0).toLowerCase() + metadata.Description.substring(1)
+          ] : [];
+          fieldProperty.type = that.defineDataType(metadata.TypeAsString);
+
+          // let consoleTable = {
+          //   id: fieldProperty.id,
+          //   label: fieldProperty.label,
+          //   description: fieldProperty.description,
+          //   required: fieldProperty.required,
+          //   readOnly: fieldProperty.readOnly,
+          //   rules: fieldProperty.rules,
+          //   type: fieldProperty.type
+          // };
+
+          // console.table(consoleTable);
+
+          // field custom properties based on custom metadata
+          // console.log("Setting custom properites for the " + metadata.InternalName + " field.");
+
+          // these custom properties exist only for certain fields
+          if (metadata.TypeAsString == "Choice") {
+            fieldProperty['v-model'] = metadata.DefaultChoice;
+            fieldProperty.items = metadata.Choices;
+            fieldProperty.hint = metadata.Description;
             consoleTable = {
-              model: targetObj.model,
-              choices: targetObj.choices
+              "v-model": fieldProperty['v-model'],
+              items: fieldProperty.items
             };
-          } else if (f.TypeAsString == "Text" || f.TypeAsString == "Note") {
-            targetObj.model = f.DefaultValue;
-            targetObj.maxLength = that.getMaxLength(f.MaxLength);
-            targetObj.counter = that.getMaxLength(f.MaxLength);
-            targetObj.hint = f.Description;
+          } else if (metadata.TypeAsString == "Text") {
+            fieldProperty['v-model'] = metadata.DefaultValue;
+            fieldProperty.maxLength = metadata.MaxLength;
+            fieldProperty.counter = metadata.MaxLength;
+            fieldProperty.hint = metadata.Description;
             consoleTable = {
-              model: targetObj.model,
-              maxLength: targetObj.maxLength,
-              counter: targetObj.counter,
-              hint: targetObj.hint
+              "v-model": fieldProperty['v-model'],
+              maxLength: fieldProperty.maxLength,
+              counter: fieldProperty.counter,
+              hint: fieldProperty.hint
             };
-          } else if (f.TypeAsString == "Number") {
-            let numericalSchema = that.getNumericalSchema(f.SchemaXml);
-            targetObj.model = f.DefaultValue;
-            targetObj.numericalSchema.minValue = numericalSchema.minValue;
-            targetObj.numericalSchema.maxValue = numericalSchema.maxValue;
-            targetObj.numericalSchema.decPlaces = numericalSchema.decPlaces;
-            targetObj.numericalSchema.isPercent = numericalSchema.isPercent;
+          } else if (metadata.TypeAsString == "Note") {
+            fieldProperty['v-model'] = metadata.DefaultValue;
+            fieldProperty.hint = metadata.Description;
             consoleTable = {
-              model: targetObj.model,
-              numericalSchema: targetObj.numericalSchema
+              "v-model": fieldProperty['v-model'],
+              counter: fieldProperty.counter,
+              hint: fieldProperty.hint
             };
-          } else if (f.TypeAsString == "Currency") {
-            let currencySchema = that.getCurrencySchema(f.SchemaXml);
-            targetObj.model = f.DefaultValue;
-            targetObj.hint = f.Description;
-            targetObj.isCurrency = true;
-            targetObj.currencySchema.minValue = currencySchema.minValue;
-            targetObj.currencySchema.decPlaces = currencySchema.decPlaces;
+          } else if (metadata.TypeAsString == "Number" || metadata.TypeAsString == "Currency") {
+            fieldProperty['v-model'] = metadata.TypeAsString == "Currency" ? null : metadata.DefaultValue;
+            fieldProperty.min = metadata.Min;
+            fieldProperty.max = metadata.Max;
+            fieldProperty.Decimals = metadata.Decimals;
+            fieldProperty.Percentage = metadata.Percentage;
+            fieldProperty.placeholder = metadata.TypeAsString == "Currency" ? metadata.DefaultValue.toLocaleString(undefined, {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: metadata.Decimals
+            }) : fieldProperty['v-model'];
+            fieldProperty.hint = metadata.Description;
             consoleTable = {
-              model: targetObj.model,
-              currencySchema: targetObj.currencySchema
+              "v-model": fieldProperty['v-model'],
+              min: fieldProperty.min,
+              max: fieldProperty.max,
+              Decimals: fieldProperty.Decimals,
+              Percentage: fieldProperty.Percentage,
+              hint: fieldProperty.hint
             };
-          } else if (f.TypeAsString == "Lookup") {
-            // these defaults have already been set elsewehere
-            // carry them over here
-            targetObj.hint = f.Description;
-            targetObj.lookupRelationships.key = f.LookupField;
-            targetObj.lookupRelationships.sourceList = f.LookupList;
+          } else if (metadata.TypeAsString == "Lookup") {
+            fieldProperty['v-model'] = metadata.DefaultValue;
+            fieldProperty.hint = metadata.Description;
+            fieldProperty['item-text'] = metadata.LookupField;
+            fieldProperty.LookupList = metadata.LookupList;
             consoleTable = {
-              hint: targetObj.hint,
-              lookupRelationships: targetObj.lookupRelationships
+              "v-model": fieldProperty['v-model'],
+              hint: fieldProperty.hint,
+              "item-text": fieldProperty['item-text'],
+              LookupList: fieldProperty.LookupList
             };
           }
 
@@ -737,7 +863,7 @@ Vue.component("grantForm", {
           Accept: "application/json;odata=nometadata"
         }
       }).then(response => {
-        this.fieldsMetadata.Program.lookupRelationships.values = response.data.value;
+        this.fieldProperties.Program.items = response.data.value;
       })
     },
 
@@ -749,7 +875,7 @@ Vue.component("grantForm", {
           Accept: "application/json;odata=nometadata"
         }
       }).then(response => {
-        this.fieldsMetadata.FieldSite.lookupRelationships.values = response.data.value;
+        this.fieldProperties.FieldSite.items = response.data.value;
       })
     },
 
@@ -768,11 +894,11 @@ Vue.component("grantForm", {
         let min = data.map(d => d.Id).reduce((acc, cur) => Math.min(acc, cur), 1);
         let max = data.map(d => d.Id).reduce((acc, cur) => Math.max(acc, cur), 1);
 
-        this.fieldsMetadata.FundingStatus.lookupRelationships.values = data;
-        this.fieldsMetadata.FundingStatus.choices = choices;
-        this.fieldsMetadata.FundingStatus.colors = colors;
-        this.fieldsMetadata.FundingStatus.min = min;
-        this.fieldsMetadata.FundingStatus.max = max;
+        this.fieldProperties.FundingStatus.items = data;
+        this.fieldProperties.FundingStatus.choices = choices;
+        this.fieldProperties.FundingStatus.colors = colors;
+        this.fieldProperties.FundingStatus.min = min;
+        this.fieldProperties.FundingStatus.max = max;
       })
     },
 
@@ -786,7 +912,7 @@ Vue.component("grantForm", {
           Accept: "application/json;odata=nometadata"
         }
       }).then(response => {
-        this.fieldsMetadata.DonorType.lookupRelationships.values = response.data.value;
+        this.fieldProperties.DonorType.items = response.data.value;
       })
     },
 
@@ -813,17 +939,19 @@ Vue.component("grantForm", {
       return value;
     },
 
-    formatCurrency: function () {
+    formatCurrency: function (e) {
 
-      let val = this.fieldsMetadata.ProgramCommitment.model;
+      // let val = this.fieldProperties.ProgramCommitment['v-model'];
+      let val = e.target.value;
 
       let value = !val ? null : parseInt(this.formatNumeric(val)).toLocaleString(undefined, {
         style: "currency",
         currency: "USD",
-        minimumFractionDigits: this.fieldsMetadata.ProgramCommitment.currencySchema.decPlaces
+        minimumFractionDigits: this.fieldProperties.ProgramCommitment.Decimals
       });
 
-      this.fieldsMetadata.ProgramCommitment.model = value;
+      e.target.value = value;
+      // this.fieldProperties.ProgramCommitment['v-model'] = value;
     },
 
     submit: function () {
@@ -838,25 +966,43 @@ Vue.component("grantForm", {
       if (this.$refs.form.validate()) {
         let that = this;
         that.loading = true;
-        // TODO: Http POST request to SharePoint
 
-        let data = {};
+        let data = {
+          "__metadata": {
+            "type": "SP.Data.GrantsListItem"
+          }
+        };
 
         // create SharePoint-accepted data structure
         this.$refs.form._data.inputs.forEach(function (d) {
-          let internalName = d.$attrs.id;
-          let dataType = d.type;
-          let isCurrency = Array.prototype.slice.call(d.$vnode.elm.classList).indexOf('currency') > -1;
-          let value = dataType == "text" && isCurrency ? that.formatNumeric(d.value) : d.value;
+          let key = that.fieldProperties[d.$vnode.data.key];
+          let value = null;
+          let TypeAsString = key.typeAsString;
+          let internalName = TypeAsString == "Lookup" ? key.internalName + "Id" : key.internalName;
+
+          if (TypeAsString == "Currency") {
+            value = that.formatNumeric(key['v-model']);
+          } else if (TypeAsString == "Choice") {
+            value = key.items.filter(d => d.Id == key['v-model'])[0].Title;
+          } else {
+            value = key['v-model'];
+          }
 
           data[internalName] = value;
         });
 
         console.table(data);
 
+        let endpoint = this.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Grants')/items";
         axios
-          .post("https://jsonplaceholder.typicode.com/posts", data)
-          .then(function (response) {
+          // .post("https://jsonplaceholder.typicode.com/posts", data)
+          .post(endpoint, data, {
+            headers: {
+              "Accept": "application/json;odata=verbose",
+              "Content-Type": "application/json;odata=verbose",
+              "X-RequestDigest": that.formDigestValue
+            }
+          }).then(function (response) {
             console.table(response.data);
             that.submissionType = submissionType;
             that.valid = false;
@@ -865,6 +1011,7 @@ Vue.component("grantForm", {
             that.clearable = false;
             that.readOnly = true;
             that.snackbar = true;
+            that.disabled = true;
           });
       }
     }
