@@ -1,20 +1,49 @@
 Vue.component("grantForm", {
   template: `<div>
+  <v-dialog v-model="progress" hide-overlay persistent width="300">
+    <v-card color="primary" dark>
+      <v-card-text>
+        Submitting your commitment
+        <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="posted" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+    <v-card tile>
+      <v-toolbar card dark color="primary">
+        <v-btn icon dark @click="posted = false">
+          <v-icon>close</v-icon>
+        </v-btn>
+        <v-toolbar-title>The Commitment Has Been {{ submissionType }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+      <v-card-text>
+        <template>
+          <v-data-table :headers="headers" :items="response" hide-actions class="elevation-1">
+            <template v-slot:items="props">
+              <td>{{ props.item.label }}</td>
+              <td>{{ props.item.value }}</td>
+            </template>
+          </v-data-table>
+        </template>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <v-snackbar v-model="snackbar" absolute color="success">
+    <span>The Commitment Has Been {{ submissionType }}</span>
+    <v-btn flat color="white" @click="snackbar = false">Close</v-btn>
+  </v-snackbar>
   <v-card>
     <v-card-title>
       <h2>Enter a New Commitment</h2>
     </v-card-title>
     <v-card-text>
-      <v-snackbar v-model="snackbar" absolute color="success">
-        <span>The Commitment Has Been {{ submissionType }}</span>
-        <v-btn flat color="white" @click="snackbar = false">Close</v-btn>
-      </v-snackbar>
       <v-form ref="form" v-model="valid" class="px-3">
         <v-stepper v-model="step" vertical>
           <v-stepper-header>
             <v-stepper-step step="1" :complete="step > 1">General Commitment Information</v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step step="2">Funding Information</v-stepper-step>
+            <v-stepper-step step="2" :complete="complete">Funding Information</v-stepper-step>
           </v-stepper-header>
           <v-stepper-items>
             <v-stepper-content step="1">
@@ -22,103 +51,60 @@ Vue.component("grantForm", {
                 <v-layout wrap align-center>
 
                   <v-flex xs12 sm12 md12>
-                    <v-text-field 
-                      v-model="fieldProperties.Title['v-model']"
-                      :key="fieldProperties.Title.internalName"
-                      :id="fieldProperties.Title.id"
-                      :rules="fieldProperties.Title.rules" 
-                      :label="fieldProperties.Title.label"
-                      :type="fieldProperties.Title.type" 
-                      :counter="fieldProperties.Title.counter"
-                      :required="fieldProperties.Title.required" 
-                      :readOnly="readOnly"
-                      :maxLength="fieldProperties.Title.maxLength" 
-                      :hint="fieldProperties.Title.hint" 
-                      persistent-hint
+                    <v-text-field v-model="fieldProperties.Title['v-model']"
+                      :internalname="fieldProperties.Title.internalName" :id="fieldProperties.Title.id"
+                      :rules="fieldProperties.Title.rules" :label="fieldProperties.Title.label"
+                      :type="fieldProperties.Title.type" :counter="fieldProperties.Title.counter"
+                      :required="fieldProperties.Title.required" :readOnly="readOnly"
+                      :maxLength="fieldProperties.Title.maxLength" :hint="fieldProperties.Title.hint" persistent-hint
                       :clearable="clearable">
                     </v-text-field>
                   </v-flex>
 
                   <v-flex xs12 sm6 md6>
-                    <v-select 
-                      v-model="fieldProperties.Program['v-model']" 
-                      :key="fieldProperties.Program.internalName"
-                      :id="fieldProperties.Program.id"
-                      :rules="fieldProperties.Program.rules" 
-                      :label="fieldProperties.Program.label"
-                      :required="fieldProperties.Program.required" 
-                      :readonly="readOnly"
-                      :items="fieldProperties.Program.items"
-                      :item-text="fieldProperties.Program['item-text']" 
-                      :item-value="fieldProperties.Program['item-value']"
-                      :hint="fieldProperties.Program.hint" 
-                      persistent-hint 
-                      outline>
+                    <v-select v-model="fieldProperties.Program['v-model']"
+                      :internalname="fieldProperties.Program.internalName" :id="fieldProperties.Program.id"
+                      :rules="fieldProperties.Program.rules" :label="fieldProperties.Program.label"
+                      :required="fieldProperties.Program.required" :readonly="readOnly"
+                      :items="fieldProperties.Program.items" :item-text="fieldProperties.Program['item-text']"
+                      :item-value="fieldProperties.Program['item-value']" :hint="fieldProperties.Program.hint"
+                      persistent-hint outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 sm6 md6>
-                    <v-select 
-                      v-model="fieldProperties.FieldSite['v-model']" 
-                      :key="fieldProperties.FieldSite.internalName"
-                      :id="fieldProperties.FieldSite.id"
-                      :rules="fieldProperties.FieldSite.rules" 
-                      :label="fieldProperties.FieldSite.label"
-                      :required="fieldProperties.FieldSite.required" 
-                      :readonly="readOnly"
-                      :items="fieldProperties.FieldSite.items"
-                      :item-text="fieldProperties.FieldSite['item-text']" 
-                      :item-value="fieldProperties.FieldSite['item-value']"
-                      :hint="fieldProperties.FieldSite.hint" 
-                      persistent-hint 
-                      outline>
+                    <v-select v-model="fieldProperties.FieldSite['v-model']"
+                      :internalname="fieldProperties.FieldSite.internalName" :id="fieldProperties.FieldSite.id"
+                      :rules="fieldProperties.FieldSite.rules" :label="fieldProperties.FieldSite.label"
+                      :required="fieldProperties.FieldSite.required" :readonly="readOnly"
+                      :items="fieldProperties.FieldSite.items" :item-text="fieldProperties.FieldSite['item-text']"
+                      :item-value="fieldProperties.FieldSite['item-value']" :hint="fieldProperties.FieldSite.hint"
+                      persistent-hint outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 sm12 md12>
                     <span class="v-label theme--light">{{ fieldProperties.Duration.label }} </span>
-                    <span 
-                      class="display-1 v-label primary--text"
-                      v-text="fieldProperties.Duration['v-model']"
-                    ></span>
-                    <span 
-                      class="subheading v-label theme--light"
-                      v-text="fieldProperties.Duration['v-model'] == 1 ? ' Year' : ' Years'"
-                    ></span>
-                    <v-slider 
-                      v-model="fieldProperties.Duration['v-model']" 
-                      :key="fieldProperties.Duration.internalName"
-                      :id="fieldProperties.Duration.id" 
-                      :rules="fieldProperties.Duration.rules"
-                      :readonly="readOnly"
-                      :required="fieldProperties.Duration.required"
-                      :min="fieldProperties.Duration.min"
-                      :max="fieldProperties.Duration.max"
-                      :hint="fieldProperties.Duration.description" 
-                      persistent-hint 
-                      always-dirty 
-                      step="1" 
-                      ticks>
+                    <span class="display-1 v-label primary--text" v-text="fieldProperties.Duration['v-model']"></span>
+                    <span class="v-label theme--light"
+                      v-text="fieldProperties.Duration['v-model'] == 1 ? ' Year' : ' Years'"></span>
+                    <v-slider v-model="fieldProperties.Duration['v-model']"
+                      :internalname="fieldProperties.Duration.internalName" :id="fieldProperties.Duration.id"
+                      :rules="fieldProperties.Duration.rules" :readonly="readOnly"
+                      :label="fieldProperties.Duration.label" :required="fieldProperties.Duration.required"
+                      :min="fieldProperties.Duration.min" :max="fieldProperties.Duration.max"
+                      :hint="fieldProperties.Duration.description" persistent-hint always-dirty step="1" ticks>
                       <v-icon :disabled="disabled" slot="prepend" @click="moveLeft($event)">fas fa-minus</v-icon>
                       <v-icon :disabled="disabled" slot="append" @click="moveRight($event)">fas fa-plus</v-icon>
                     </v-slider>
                   </v-flex>
 
                   <v-flex xs12 sm12 md12>
-                    <v-textarea 
-                      v-model="fieldProperties.Notes['v-model']" 
-                      :key="fieldProperties.Notes.internalName"
-                      :id="fieldProperties.Notes.id"
-                      :rules="fieldProperties.Notes.rules" 
-                      :readonly="readOnly"
-                      :label="fieldProperties.Notes.label"
-                      :type="fieldProperties.Notes.type" 
-                      :required="fieldProperties.Notes.required" 
-                      :hint="fieldProperties.Notes.hint" 
-                      persistent-hint 
-                      :clearable="clearable" 
-                      outline 
-                      auto-grow>
+                    <v-textarea v-model="fieldProperties.Notes['v-model']"
+                      :internalname="fieldProperties.Notes.internalName" :id="fieldProperties.Notes.id"
+                      :rules="fieldProperties.Notes.rules" :readonly="readOnly" :label="fieldProperties.Notes.label"
+                      :type="fieldProperties.Notes.type" :required="fieldProperties.Notes.required"
+                      :hint="fieldProperties.Notes.hint" persistent-hint :clearable="clearable" outline auto-grow>
                     </v-textarea>
                   </v-flex>
 
@@ -132,30 +118,19 @@ Vue.component("grantForm", {
 
                   <v-flex xs12 sm9 md9 class="text-xs-center">
 
-                    <v-radio-group 
-                      v-model="fieldProperties.FundingStatus['v-model']"
-                      :key="fieldProperties.FundingStatus.internalName"
-                      :id="fieldProperties.FundingStatus.id"
-                      :rules="fieldProperties.FundingStatus.rules" 
-                      :readonly="readOnly"
-                      :label="fieldProperties.FundingStatus.label"
-                      :hint="fieldProperties.FundingStatus.description"
-                      persistent-hint
-                    row
-                    >
-                      <v-radio
-                        v-for="item in fieldProperties.FundingStatus.items" 
-                        :key="item.Id"
-                        :label="item.Title" 
-                        :value="item.Id"
-                        :color="item.Color.Color"
-                      >
+                    <v-radio-group v-model="fieldProperties.FundingStatus['v-model']"
+                      :internalname="fieldProperties.FundingStatus.internalName" :id="fieldProperties.FundingStatus.id"
+                      :rules="fieldProperties.FundingStatus.rules" :readonly="readOnly"
+                      :label="fieldProperties.FundingStatus.label" :hint="fieldProperties.FundingStatus.description"
+                      persistent-hint row>
+                      <v-radio v-for="item in fieldProperties.FundingStatus.items" :key="item.Id" :label="item.Title"
+                        :value="item.Id" :color="item.Color.Color">
                       </v-radio>
                     </v-radio-group>
 
                     <!-- <v-item-group 
                       v-model="fieldProperties.FundingStatus['v-model']"
-                      :key="fieldProperties.FundingStatus.internalName"
+                      :internalname="fieldProperties.FundingStatus.internalName"
                       :id="fieldProperties.FundingStatus.id"
                       :rules="fieldProperties.FundingStatus.rules" 
                       :readonly="readOnly"
@@ -185,98 +160,57 @@ Vue.component("grantForm", {
                   </v-flex>
 
                   <v-flex xs12 sm3 md3>
-                    <v-select 
-                      v-model="fieldProperties.FiscalYear['v-model']" 
-                      :key="fieldProperties.FiscalYear.internalName"
-                      :id="fieldProperties.FiscalYear.id"
-                      :rules="fieldProperties.FiscalYear.rules" 
-                      :label="fieldProperties.FiscalYear.label"
-                      :required="fieldProperties.FiscalYear.required" 
-                      :readonly="readOnly"
-                      :items="fieldProperties.FiscalYear.items"
-                      item-text="Title" 
-                      item-value="Id"
-                      :hint="fieldProperties.FiscalYear.hint" 
-                      persistent-hint 
-                      outline>
+                    <v-select v-model="fieldProperties.FiscalYear['v-model']"
+                      :internalname="fieldProperties.FiscalYear.internalName" :id="fieldProperties.FiscalYear.id"
+                      :rules="fieldProperties.FiscalYear.rules" :label="fieldProperties.FiscalYear.label"
+                      :required="fieldProperties.FiscalYear.required" :readonly="readOnly"
+                      :items="fieldProperties.FiscalYear.items" item-text="Title" item-value="Id"
+                      :hint="fieldProperties.FiscalYear.hint" persistent-hint outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 sm6 md6>
-                    <v-select 
-                      v-model="fieldProperties.DonorType['v-model']" 
-                      :key="fieldProperties.DonorType.internalName"
-                      :id="fieldProperties.DonorType.id"
-                      :rules="fieldProperties.DonorType.rules" 
-                      :label="fieldProperties.DonorType.label"
-                      :required="fieldProperties.DonorType.required" 
-                      :readonly="readOnly"
-                      :items="fieldProperties.DonorType.items"
-                      item-text="DonorType.Title" 
-                      item-value="DonorType.Id"
-                      :hint="fieldProperties.DonorType.hint" 
-                      persistent-hint 
-                      outline>
+                    <v-select v-model="fieldProperties.DonorType['v-model']"
+                      :internalname="fieldProperties.DonorType.internalName" :id="fieldProperties.DonorType.id"
+                      :rules="fieldProperties.DonorType.rules" :label="fieldProperties.DonorType.label"
+                      :required="fieldProperties.DonorType.required" :readonly="readOnly"
+                      :items="fieldProperties.DonorType.items" item-text="DonorType.Title" item-value="DonorType.Id"
+                      :hint="fieldProperties.DonorType.hint" persistent-hint outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 sm6 md6>
-                    <v-select 
-                      v-model="fieldProperties.Donor['v-model']" 
-                      :key="fieldProperties.Donor.internalName"
-                      :id="fieldProperties.Donor.id"
-                      :rules="fieldProperties.Donor.rules" 
-                      :label="fieldProperties.Donor.label"
-                      :required="fieldProperties.Donor.required" 
-                      :readonly="readOnly"
-                      :items="filteredDonors"
-                      :item-text="fieldProperties.Donor['item-text']"
-                      :item-value="fieldProperties.Donor['item-value']"
-                      :hint="fieldProperties.Donor.hint" 
-                      persistent-hint 
-                      outline>
+                    <v-select v-model="fieldProperties.Donor['v-model']"
+                      :internalname="fieldProperties.Donor.internalName" :id="fieldProperties.Donor.id"
+                      :rules="fieldProperties.Donor.rules" :label="fieldProperties.Donor.label"
+                      :required="fieldProperties.Donor.required" :readonly="readOnly" :items="filteredDonors"
+                      :item-text="fieldProperties.Donor['item-text']" :item-value="fieldProperties.Donor['item-value']"
+                      :hint="fieldProperties.Donor.hint" persistent-hint outline>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs6 sm6 md6>
-                    <v-text-field 
-                      v-model="fieldProperties.ProgramCommitment['v-model']" 
-                      :key="fieldProperties.ProgramCommitment.internalName"
-                      :id="fieldProperties.ProgramCommitment.id"
-                      :rules="fieldProperties.ProgramCommitment.rules" 
-                      :label="fieldProperties.ProgramCommitment.label"
-                      :type="fieldProperties.ProgramCommitment.type" 
-                      :required="fieldProperties.ProgramCommitment.required" 
-                      :readonly="readOnly"
-                      :hint="fieldProperties.ProgramCommitment.hint"
-                      :placeholder="fieldProperties.ProgramCommitment.placeholder"
-                      @keyup="formatCurrency($event)"
-                      class="align-end"
-                      persistent-hint
-                      :clearable="clearable">
-                    </v-text-field>
+                    <currency v-model="fieldProperties.ProgramCommitment['v-model']"
+                      :internalname="fieldProperties.ProgramCommitment.internalName"
+                      :id="fieldProperties.ProgramCommitment.id" :rules="fieldProperties.ProgramCommitment.rules"
+                      :label="fieldProperties.ProgramCommitment.label" :type="fieldProperties.ProgramCommitment.type"
+                      :required="fieldProperties.ProgramCommitment.required" :readonly="readOnly"
+                      :hint="fieldProperties.ProgramCommitment.hint" persistent-hint>
+                    </currency>
                   </v-flex>
 
                   <v-flex xs6 sm6 md6>
-                    <v-text-field 
-                      v-model="fieldProperties.FieldSiteCommitment['v-model']" 
-                      :key="fieldProperties.FieldSiteCommitment.internalName"
-                      :id="fieldProperties.FieldSiteCommitment.id"
-                      :rules="fieldProperties.FieldSiteCommitment.rules" 
+                    <currency v-model="fieldProperties.FieldSiteCommitment['v-model']"
+                      :internalname="fieldProperties.FieldSiteCommitment.internalName"
+                      :id="fieldProperties.FieldSiteCommitment.id" :rules="fieldProperties.FieldSiteCommitment.rules"
                       :label="fieldProperties.FieldSiteCommitment.label"
-                      :type="fieldProperties.FieldSiteCommitment.type" 
-                      :required="fieldProperties.FieldSiteCommitment.required" 
-                      :readonly="readOnly"
-                      :hint="fieldProperties.FieldSiteCommitment.hint"
-                      :placeholder="fieldProperties.FieldSiteCommitment.placeholder"
-                      @keyup="formatCurrency($event)"
-                      class="align-end"
-                      persistent-hint
-                      :clearable="clearable">
-                    </v-text-field>
+                      :type="fieldProperties.FieldSiteCommitment.type"
+                      :required="fieldProperties.FieldSiteCommitment.required" :readonly="readOnly"
+                      :hint="fieldProperties.FieldSiteCommitment.hint" persistent-hint>
+                    </currency>
                   </v-flex>
 
-                  </v-layout>
+                </v-layout>
               </v-container>
               <v-btn flat @click.native="step = 1">Previous</v-btn>
               <v-btn :disabled="!valid" :loading="loading" outline color="primary" @click.prevent="save">
@@ -302,21 +236,35 @@ Vue.component("grantForm", {
     </v-card-text>
   </v-card>
 </div>`,
-  props: {
-    editedItem: Object,
-    pageName: String
-  },
-
+  props: {},
   data: function (vm) {
     return {
       step: 1,
       disabled: false,
-      valid: true,
+      valid: false,
+      complete: false,
       loading: false,
-      dialog: true,
+      progress: false,
       readOnly: false,
       clearable: true,
       snackbar: false,
+      posted: false,
+      response: [],
+      headers: [{
+          text: 'Item',
+          align: 'left',
+          sortable: false,
+          class: "display-1 v-label primary--text",
+          value: 'label'
+        },
+        {
+          text: 'Value',
+          align: 'left',
+          sortable: false,
+          class: "display-1 v-label primary--text",
+          value: 'value'
+        }
+      ],
       submissionType: null,
       fieldProperties: {
         Title: {
@@ -522,38 +470,21 @@ Vue.component("grantForm", {
   },
 
   watch: {
-
-    editedItem: function () {
-      this.$refs.form.reset();
-      this.step = 1;
-      this.valid = false;
-      this.loading = false;
-      this.dialog = true;
-      this.readOnly = false;
-      this.clearable = true;
-      this.snackbar = false;
-
-      for (let obj in this.editedItem) {
-        if (obj !== "Id") {
-          let fieldId = obj;
-          let itemFormattedValue = null;
-          let itemValue = this.editedItem[fieldId];
-
-        }
-      }
+    valid: function () {
+      this.complete = this.valid;
     }
   },
 
   methods: {
     moveLeft: function (e) {
 
-      this.fieldProperties[e.target.__vue__.$parent.$vnode.data.key]['v-model']--;
+      this.fieldProperties[e.target.__vue__.$parent.$attrs.internalname]['v-model']--;
       // this.fieldProperties.Duration['v-model']--;
     },
 
     moveRight: function (e) {
 
-      this.fieldProperties[e.target.__vue__.$parent.$vnode.data.key]['v-model']++;
+      this.fieldProperties[e.target.__vue__.$parent.$attrs.internalname]['v-model']++;
       // this.fieldProperties.Duration['v-model']++;
     },
 
@@ -816,16 +747,12 @@ Vue.component("grantForm", {
               hint: fieldProperty.hint
             };
           } else if (metadata.TypeAsString == "Number" || metadata.TypeAsString == "Currency") {
-            fieldProperty['v-model'] = metadata.TypeAsString == "Currency" ? null : metadata.DefaultValue;
+            fieldProperty['v-model'] = metadata.DefaultValue;
             fieldProperty.min = metadata.Min;
             fieldProperty.max = metadata.Max;
             fieldProperty.Decimals = metadata.Decimals;
             fieldProperty.Percentage = metadata.Percentage;
-            fieldProperty.placeholder = metadata.TypeAsString == "Currency" ? metadata.DefaultValue.toLocaleString(undefined, {
-              style: "currency",
-              currency: "USD",
-              minimumFractionDigits: metadata.Decimals
-            }) : fieldProperty['v-model'];
+            fieldProperty.placeholder = fieldProperty['v-model'];
             fieldProperty.hint = metadata.Description;
             consoleTable = {
               "v-model": fieldProperty['v-model'],
@@ -965,7 +892,9 @@ Vue.component("grantForm", {
     submission: function (submissionType) {
       if (this.$refs.form.validate()) {
         let that = this;
+
         that.loading = true;
+        that.progress = true;
 
         let data = {
           "__metadata": {
@@ -973,20 +902,41 @@ Vue.component("grantForm", {
           }
         };
 
+        that.response.push({
+          label: 'Id',
+          value: null
+        });
+
         // create SharePoint-accepted data structure
         this.$refs.form._data.inputs.forEach(function (d) {
-          let key = that.fieldProperties[d.$vnode.data.key];
+          // let key = that.fieldProperties[d.$attrs];
+          let key = that.fieldProperties[d.$vnode.data.attrs.internalname];
+          let val = null;
           let value = null;
           let TypeAsString = key.typeAsString;
           let internalName = TypeAsString == "Lookup" ? key.internalName + "Id" : key.internalName;
 
-          if (TypeAsString == "Currency") {
-            value = that.formatNumeric(key['v-model']);
-          } else if (TypeAsString == "Choice") {
+          // get field value from control
+          // to submit to SharePoint, get the 'v-model' property
+          // to show in a data table, determine the type of control and get the printer-friendly value
+          if (TypeAsString == "Choice") {
             value = key.items.filter(d => d.Id == key['v-model'])[0].Title;
           } else {
             value = key['v-model'];
           }
+
+          label = d.label;
+          if (d.items) {
+            val = d._data.selectedItems[0].Title
+          } else if (d.radios) {
+            val = d._data.radios[d.value - 1].label;
+          } else {
+            val = d.value;
+          }
+          that.response.push({
+            label: label,
+            value: val
+          });
 
           data[internalName] = value;
         });
@@ -1002,15 +952,23 @@ Vue.component("grantForm", {
               "Content-Type": "application/json;odata=verbose",
               "X-RequestDigest": that.formDigestValue
             }
-          }).then(function (response) {
-            console.table(response.data);
+          })
+          .then(function (r) {
+            console.table(r.data.d);
             that.submissionType = submissionType;
+            that.response.filter(d => d.label == "Id")[0].value = r.data.d.Id;
+
+            setTimeout(() => (
+              that.progress = false,
+              that.posted = true
+            ), 4000)
+
+            // lock down form
             that.valid = false;
+            that.complete = true;
             that.loading = false;
-            that.dialog = false;
             that.clearable = false;
             that.readOnly = true;
-            that.snackbar = true;
             that.disabled = true;
           });
       }

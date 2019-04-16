@@ -128,6 +128,7 @@ PublicKeyToken=71e9bce111e9429c" %>
 	<script src="../SiteAssets/components/toolbar.vue.js"></script>
 	<script src="../SiteAssets/components/footer.vue.js"></script>
 	<script src="../SiteAssets/components/form.vue.js"></script>
+	<script src="../SiteAssets/components/currency.vue.js"></script>
 	<!-- <script src="../SiteAssets/components/table.vue.js"></script> -->
 
 	<script>
