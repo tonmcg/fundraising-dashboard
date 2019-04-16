@@ -1,38 +1,7 @@
-Vue.component("grantForm", {
+Vue.component("grant-form", {
   template: `<div>
-  <v-dialog v-model="progress" hide-overlay persistent width="300">
-    <v-card color="primary" dark>
-      <v-card-text>
-        Submitting your commitment
-        <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
-  <v-dialog v-model="posted" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
-    <v-card tile>
-      <v-toolbar card dark color="primary">
-        <v-btn icon dark @click="posted = false">
-          <v-icon>close</v-icon>
-        </v-btn>
-        <v-toolbar-title>The Commitment Has Been {{ submissionType }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-      </v-toolbar>
-      <v-card-text>
-        <template>
-          <v-data-table :headers="headers" :items="response" hide-actions class="elevation-1">
-            <template v-slot:items="props">
-              <td>{{ props.item.label }}</td>
-              <td>{{ props.item.value }}</td>
-            </template>
-          </v-data-table>
-        </template>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
-  <v-snackbar v-model="snackbar" absolute color="success">
-    <span>The Commitment Has Been {{ submissionType }}</span>
-    <v-btn flat color="white" @click="snackbar = false">Close</v-btn>
-  </v-snackbar>
+  <progress-dialog :submissionType="submissionType" :dialog="progress"></progress-dialog>
+  <success-dialog :submissionType="submissionType" :dialog="posted" :items="response"></success-dialog>
   <v-card>
     <v-card-title>
       <h2>Enter a New Commitment</h2>
@@ -247,24 +216,8 @@ Vue.component("grantForm", {
       progress: false,
       readOnly: false,
       clearable: true,
-      snackbar: false,
       posted: false,
       response: [],
-      headers: [{
-          text: 'Item',
-          align: 'left',
-          sortable: false,
-          class: "display-1 v-label primary--text",
-          value: 'label'
-        },
-        {
-          text: 'Value',
-          align: 'left',
-          sortable: false,
-          class: "display-1 v-label primary--text",
-          value: 'value'
-        }
-      ],
       submissionType: null,
       fieldProperties: {
         Title: {
@@ -477,15 +430,11 @@ Vue.component("grantForm", {
 
   methods: {
     moveLeft: function (e) {
-
       this.fieldProperties[e.target.__vue__.$parent.$attrs.internalname]['v-model']--;
-      // this.fieldProperties.Duration['v-model']--;
     },
 
     moveRight: function (e) {
-
       this.fieldProperties[e.target.__vue__.$parent.$attrs.internalname]['v-model']++;
-      // this.fieldProperties.Duration['v-model']++;
     },
 
     // return json representation of the field xml schema
@@ -595,11 +544,13 @@ Vue.component("grantForm", {
       };
     },
 
-    // return a object representing the field numerical or currency schema including
-    // mimimum value
-    // maximum value
-    // number of decimal places
-    // boolean if field is in percentage format
+    /*  
+      return a object representing the field numerical or currency schema including
+      mimimum value
+      maximum value
+      number of decimal places
+      boolean if field is in percentage format
+    */
     getNumericalSchema: function (textXML) {
       let xmlDoc = this.parseXML(textXML);
       let fieldSchema = xmlDoc.getElementsByTagName('Field')[0];
@@ -624,9 +575,11 @@ Vue.component("grantForm", {
       ] : [];
       return rules;
     },
-    // return information on the fields in this form
-    // including static names, display names, data types,
-    // field descriptions, and default and possible values
+    /*  
+      return information on the fields in this form
+      including static names, display names, data types,
+      field descriptions, and default and possible values
+    */
     getFieldMetadata: function () {
       let filter = "(Hidden eq false) and (TypeAsString ne 'Attachments' and TypeAsString ne 'Computed') and (FromBaseType eq false) or (InternalName eq 'Title')  or (InternalName eq 'ID') or (InternalName eq 'Author') or (InternalName eq 'Created')";
       let select = "InternalName,Title,TypeAsString,Required,MaxLength,Sortable,Description,DefaultValue,Filterable,ReadOnlyField,SchemaXml,LookupList,LookupField";
@@ -893,6 +846,7 @@ Vue.component("grantForm", {
       if (this.$refs.form.validate()) {
         let that = this;
 
+        that.submissionType = submissionType;
         that.loading = true;
         that.progress = true;
 
@@ -955,7 +909,6 @@ Vue.component("grantForm", {
           })
           .then(function (r) {
             console.table(r.data.d);
-            that.submissionType = submissionType;
             that.response.filter(d => d.label == "Id")[0].value = r.data.d.Id;
 
             setTimeout(() => (
